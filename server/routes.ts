@@ -2839,6 +2839,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Workout Plans Routes
+  app.get("/api/clients/:clientId/workout-plans", authenticateToken, async (req, res) => {
+    try {
+      const plans = await storage.getClientWorkoutPlans(req.params.clientId);
+      res.json(plans);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // Workout Bookmarks Routes
   app.get("/api/clients/:clientId/workout-bookmarks", authenticateToken, async (req, res) => {
     try {

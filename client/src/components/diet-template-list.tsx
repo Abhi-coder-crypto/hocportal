@@ -539,21 +539,6 @@ export function DietTemplateList({ isTrainer = false, trainerId = '' }: { isTrai
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="selected-day">Day of Week *</Label>
-              <Select value={formData.selectedDay} onValueChange={(value) => setFormData({ ...formData, selectedDay: value })}>
-                <SelectTrigger id="selected-day" data-testid="select-day">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {DAYS_OF_WEEK.map(day => (
-                    <SelectItem key={day.value} value={day.value}>{day.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground">Select which day this meal plan is for</p>
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="target-calories">Target Calories *</Label>
               <Input
                 id="target-calories"

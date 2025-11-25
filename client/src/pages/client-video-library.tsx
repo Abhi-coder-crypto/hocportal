@@ -3,12 +3,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Clock, Play, Search, Filter, Loader2, X, Bookmark } from "lucide-react";
+import { Clock, Play, Search, Filter, Loader2, X, Bookmark, BookmarkCheck } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { MobileNavigation } from "@/components/mobile-navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { VideoPlayerModal } from "@/components/video-player-modal";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface Video {
   _id: string;
@@ -54,6 +55,33 @@ export default function ClientVideoLibrary() {
     queryKey: ['/api/clients', clientId, 'bookmarks'],
     enabled: !!clientId,
   });
+
+  const { data: bookmarks = [] } = useQuery<any[]>({
+    queryKey: [`/api/clients/${clientId}/bookmarks`],
+    enabled: !!clientId,
+  });
+
+  const bookmarkMutation = useMutation({
+    mutationFn: async ({ videoId, isBookmarked }: { videoId: string; isBookmarked: boolean }) => {
+      if (isBookmarked) {
+        return apiRequest('DELETE', `/api/clients/${clientId}/bookmarks/${videoId}`);
+      } else {
+        return apiRequest('POST', `/api/clients/${clientId}/bookmarks/${videoId}`);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/clients/${clientId}/bookmarks`] });
+    },
+  });
+
+  const isVideoBookmarked = (videoId: string) => {
+    return bookmarks.some(b => b.videoId === videoId);
+  };
+
+  const handleToggleBookmark = (videoId: string) => {
+    const isBookmarked = isVideoBookmarked(videoId);
+    bookmarkMutation.mutate({ videoId, isBookmarked });
+  };
 
   // Filter videos (exclude drafts)
   const displayVideos = viewingBookmarks ? bookmarkedVideos : videos;
@@ -171,7 +199,9 @@ export default function ClientVideoLibrary() {
           {/* Videos Grid */}
           {!(isLoading || bookmarksLoading) && filteredVideos.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredVideos.map((video) => (
+              {filteredVideos.map((video) => {
+                const isBookmarked = isVideoBookmarked(video._id);
+                return (
                 <Card
                   key={video._id}
                   className="hover-elevate overflow-hidden cursor-pointer transition-all group"
@@ -197,8 +227,24 @@ export default function ClientVideoLibrary() {
                         </div>
                       </div>
                     </div>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToggleBookmark(video._id);
+                      }}
+                      data-testid={`button-bookmark-${video._id}`}
+                    >
+                      {isBookmarked ? (
+                        <BookmarkCheck className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Bookmark className="h-4 w-4" />
+                      )}
+                    </Button>
                     {video.duration && (
-                      <div className="absolute top-2 right-2 bg-black/80 rounded-md px-2 py-1 flex items-center gap-1">
+                      <div className="absolute bottom-2 right-2 bg-black/80 rounded-md px-2 py-1 flex items-center gap-1">
                         <Clock className="h-3 w-3 text-white" />
                         <span className="text-xs font-semibold text-white">
                           {video.duration} min
@@ -232,7 +278,8 @@ export default function ClientVideoLibrary() {
                     )}
                   </CardContent>
                 </Card>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>

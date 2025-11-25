@@ -243,13 +243,50 @@ export default function ClientDiet() {
     setWaterIntake(0);
   };
 
+  // Generate grocery list from current day meals
+  const generateGroceryList = () => {
+    const groceries: Record<string, any[]> = {};
+    dayMeals.forEach((meal: any) => {
+      if (meal.dishes) {
+        meal.dishes.forEach((dish: any) => {
+          const category = dish.category || 'Other';
+          if (!groceries[category]) groceries[category] = [];
+          groceries[category].push({
+            name: dish.name,
+            quantity: dish.quantity || '1',
+            unit: dish.unit || 'unit'
+          });
+        });
+      }
+    });
+    return groceries;
+  };
+
+  // Check if meal contains allergens
+  const mealHasAllergens = (meal: any) => {
+    if (!clientAllergens.length) return false;
+    const allergenLower = clientAllergens.map(a => a.toLowerCase());
+    const dishNames = meal.dishes?.map((d: any) => d.name.toLowerCase()).join(' ') || '';
+    const mealName = meal.name.toLowerCase();
+    return allergenLower.some(a => dishNames.includes(a) || mealName.includes(a));
+  };
+
+  // Add supplement to log
+  const addSupplementLog = () => {
+    if (newSupplement.name.trim()) {
+      setSupplementLog([...supplementLog, { ...newSupplement, timestamp: new Date().toLocaleTimeString() }]);
+      setNewSupplement({ name: '', dosage: '', timing: '' });
+      toast({ title: 'Supplement logged', description: `${newSupplement.name} added to your supplement log.` });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background mb-24 md:mb-0">
       <ClientHeader />
       
       <main className="p-4 md:p-6 max-w-7xl mx-auto">
         <Tabs defaultValue="diet" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid w-full grid-cols-6 mb-6">
             <TabsTrigger value="diet" data-testid="tab-diet">
               <UtensilsCrossed className="h-4 w-4 mr-2" />
               Diet
@@ -257,6 +294,22 @@ export default function ClientDiet() {
             <TabsTrigger value="macros" data-testid="tab-macros">
               <Zap className="h-4 w-4 mr-2" />
               Macros
+            </TabsTrigger>
+            <TabsTrigger value="substitutions" data-testid="tab-substitutions">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Swap
+            </TabsTrigger>
+            <TabsTrigger value="allergens" data-testid="tab-allergens">
+              <AlertTriangle className="h-4 w-4 mr-2" />
+              Allergens
+            </TabsTrigger>
+            <TabsTrigger value="grocery" data-testid="tab-grocery">
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Grocery
+            </TabsTrigger>
+            <TabsTrigger value="supplements" data-testid="tab-supplements">
+              <Pill className="h-4 w-4 mr-2" />
+              Supplements
             </TabsTrigger>
           </TabsList>
 

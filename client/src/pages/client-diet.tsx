@@ -47,6 +47,7 @@ export default function ClientDiet() {
 
   useEffect(() => {
     const id = localStorage.getItem("clientId");
+    console.log('[CLIENT DIET] Initializing, clientId from storage:', id);
     if (!id) {
       setLocation("/client-access");
     } else {
@@ -61,6 +62,17 @@ export default function ClientDiet() {
   // The API already filters by clientId, so we just use the first plan
   // If there are multiple plans, we take the most recent one (API sorts by createdAt desc)
   const currentPlan = dietPlans && dietPlans.length > 0 ? dietPlans[0] : null;
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('[CLIENT DIET] Query data updated:', {
+      dietPlans: dietPlans,
+      isLoading: isLoadingDiet,
+      planCount: dietPlans?.length || 0,
+      firstPlan: currentPlan?.name || 'NO PLAN',
+      clientId: clientId,
+    });
+  }, [dietPlans, isLoadingDiet, currentPlan, clientId]);
   
   // Reset currentWeek when diet plan changes - default to week 4 if it exists
   useEffect(() => {

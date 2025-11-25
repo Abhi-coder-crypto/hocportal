@@ -165,13 +165,13 @@ export default function ClientVideoLibrary() {
                 <Card
                   key={video._id}
                   className="hover-elevate overflow-hidden cursor-pointer transition-all group"
-                  onClick={() => setPlayingVideo({ url: video.url, title: video.title, id: video._id })}
+                  onClick={() => setPlayingVideo({ url: `/api/videos/${video._id}/stream`, title: video.title, id: video._id })}
                   data-testid={`video-card-${video._id}`}
                 >
                   <div className="relative aspect-video bg-muted overflow-hidden">
-                    {video.thumbnail ? (
+                    {video.thumbnail || video.thumbnailData ? (
                       <img
-                        src={video.thumbnail}
+                        src={video.thumbnailData !== undefined ? `/api/videos/${video._id}/thumbnail` : video.thumbnail}
                         alt={video.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />

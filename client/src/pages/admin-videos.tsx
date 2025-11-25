@@ -82,7 +82,7 @@ export default function AdminVideos() {
   };
 
   const handlePlayVideo = (video: Video) => {
-    setPlayingVideo({ url: video.url, title: video.title });
+    setPlayingVideo({ url: `/api/videos/${video._id}/stream`, title: video.title, id: video._id });
   };
 
   const handleDelete = (videoId: string) => {
@@ -214,10 +214,10 @@ export default function AdminVideos() {
                         <Card key={video._id} className="hover-elevate overflow-hidden" data-testid={`card-video-${video._id}`}>
                           <CardContent className="p-0">
                             <div className="relative aspect-video bg-muted flex items-center justify-center rounded-t-md group overflow-hidden">
-                              {video.thumbnail ? (
+                              {video.thumbnail || video.thumbnailData ? (
                                 <>
                                   <img 
-                                    src={video.thumbnail} 
+                                    src={video.thumbnailData !== undefined ? `/api/videos/${video._id}/thumbnail` : video.thumbnail} 
                                     alt={video.title}
                                     className="w-full h-full object-cover"
                                   />
@@ -226,7 +226,7 @@ export default function AdminVideos() {
                                       <Button 
                                         size="icon" 
                                         className="h-12 w-12 rounded-full"
-                                        onClick={() => video.url && setPlayingVideo({ url: video.url, title: video.title, id: video._id })}
+                                        onClick={() => setPlayingVideo({ url: `/api/videos/${video._id}/stream`, title: video.title, id: video._id })}
                                         data-testid={`button-play-${video._id}`}
                                       >
                                         <Play className="h-6 w-6 fill-current" />
@@ -238,20 +238,18 @@ export default function AdminVideos() {
                                 <>
                                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5" />
                                   <Play className="h-12 w-12 text-primary/40 relative z-10" />
-                                  {video.url && (
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-colors">
-                                      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Button 
-                                          size="icon" 
-                                          className="h-12 w-12 rounded-full"
-                                          onClick={() => setPlayingVideo({ url: video.url, title: video.title, id: video._id })}
-                                          data-testid={`button-play-${video._id}`}
-                                        >
-                                          <Play className="h-6 w-6 fill-current" />
-                                        </Button>
-                                      </div>
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-colors">
+                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <Button 
+                                        size="icon" 
+                                        className="h-12 w-12 rounded-full"
+                                        onClick={() => setPlayingVideo({ url: `/api/videos/${video._id}/stream`, title: video.title, id: video._id })}
+                                        data-testid={`button-play-${video._id}`}
+                                      >
+                                        <Play className="h-6 w-6 fill-current" />
+                                      </Button>
                                     </div>
-                                  )}
+                                  </div>
                                 </>
                               )}
                               {video.isDraft && (

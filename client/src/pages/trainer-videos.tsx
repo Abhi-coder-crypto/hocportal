@@ -143,7 +143,7 @@ export default function TrainerVideos() {
                                     <Button 
                                       size="icon" 
                                       className="h-12 w-12 rounded-full"
-                                      onClick={() => video.url && setPlayingVideo({ url: video.url, title: video.title })}
+                                      onClick={() => setPlayingVideo({ url: `/api/videos/${video.id}/stream`, title: video.title })}
                                       data-testid={`button-play-${video.id}`}
                                     >
                                       <Play className="h-6 w-6" />

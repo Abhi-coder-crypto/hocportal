@@ -181,19 +181,7 @@ export default function ClientDiet() {
   
   // Helper to calculate meal totals from dishes
   const calculateMealTotals = (meal: any) => {
-    // Check if meal already has valid numerical totals
-    const hasValidTotals = 
-      typeof meal.calories === 'number' && meal.calories > 0 &&
-      typeof meal.protein === 'number' &&
-      typeof meal.carbs === 'number' &&
-      typeof meal.fats === 'number';
-    
-    if (hasValidTotals) {
-      console.log(`[CALC TOTALS] Meal "${meal.name}" already has valid totals:`, { calories: meal.calories, protein: meal.protein });
-      return meal; // Already has totals
-    }
-    
-    // If no valid totals but has dishes, aggregate from dishes
+    // Always try to calculate from dishes if they exist
     if (meal.dishes && Array.isArray(meal.dishes) && meal.dishes.length > 0) {
       const totals = meal.dishes.reduce((acc: any, dish: any) => ({
         calories: acc.calories + (parseInt(dish.calories) || 0),
@@ -201,8 +189,22 @@ export default function ClientDiet() {
         carbs: acc.carbs + (parseInt(dish.carbs) || 0),
         fats: acc.fats + (parseInt(dish.fats) || 0),
       }), { calories: 0, protein: 0, carbs: 0, fats: 0 });
-      console.log(`[CALC TOTALS] Calculated from dishes for "${meal.name}":`, totals);
+      console.log(`[CALC TOTALS] Calculated from ${meal.dishes.length} dishes for "${meal.name}":`, totals);
       return { ...meal, ...totals };
+    }
+    
+    // Check if meal already has totals at top level (even if 0)
+    const mealTotals = {
+      calories: parseInt(meal.calories) || 0,
+      protein: parseInt(meal.protein) || 0,
+      carbs: parseInt(meal.carbs) || 0,
+      fats: parseInt(meal.fats) || 0,
+    };
+    
+    // If meal has any non-zero totals or all are present, use them
+    if (Object.values(mealTotals).some(v => v > 0) || (meal.calories !== undefined && meal.protein !== undefined)) {
+      console.log(`[CALC TOTALS] Using top-level totals for "${meal.name}":`, mealTotals);
+      return { ...meal, ...mealTotals };
     }
     
     console.log(`[CALC TOTALS] No data for meal "${meal.name}"`);
@@ -230,10 +232,12 @@ export default function ClientDiet() {
     } else if (typeof currentPlan.meals === 'object') {
       // New format: object keyed by day name { Monday: {...}, Tuesday: {...} }
       const mealObj = currentPlan.meals[currentDay];
+      console.log(`[CLIENT DIET] Getting meals for ${currentDay}:`, JSON.stringify(mealObj, null, 2));
       if (mealObj) {
         // Convert from { breakfast: {...}, lunch: {...} } to array of meals
         dayMeals = Object.entries(mealObj).map(([type, data]: [string, any]) => {
           const meal = { type, ...data };
+          console.log(`[CLIENT DIET] Meal before calc totals:`, JSON.stringify(meal, null, 2));
           return calculateMealTotals(meal);
         });
       }

@@ -25,6 +25,8 @@ import {
   WorkoutCompletion,
   DietPlanAssignment,
   WorkoutPlanAssignment,
+  WorkoutBookmark,
+  WorkoutNote,
   type IPackage,
   type IClient,
   type IBodyMetrics,
@@ -50,6 +52,8 @@ import {
   type IWorkoutCompletion,
   type IDietPlanAssignment,
   type IWorkoutPlanAssignment,
+  type IWorkoutBookmark,
+  type IWorkoutNote,
 } from './models';
 import { Message, type IMessage } from './models/message';
 import { Ticket, type ITicket } from './models/ticket';
@@ -842,6 +846,75 @@ export class MongoStorage implements IStorage {
     }
     
     return await WorkoutPlan.findById(workoutPlanId);
+  }
+
+  // Workout Bookmark methods
+  async getClientWorkoutBookmarks(clientId: string): Promise<any[]> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    return await WorkoutBookmark.find({ clientId: convertedClientId }).populate('workoutPlanId').lean();
+  }
+
+  async isWorkoutBookmarked(clientId: string, workoutPlanId: string): Promise<boolean> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    const convertedPlanId = new mongoose.Types.ObjectId(workoutPlanId);
+    const bookmark = await WorkoutBookmark.findOne({ clientId: convertedClientId, workoutPlanId: convertedPlanId });
+    return !!bookmark;
+  }
+
+  async toggleWorkoutBookmark(clientId: string, workoutPlanId: string): Promise<boolean> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    const convertedPlanId = new mongoose.Types.ObjectId(workoutPlanId);
+    const existing = await WorkoutBookmark.findOne({ clientId: convertedClientId, workoutPlanId: convertedPlanId });
+    
+    if (existing) {
+      await WorkoutBookmark.deleteOne({ _id: existing._id });
+      return false;
+    } else {
+      await new WorkoutBookmark({ clientId: convertedClientId, workoutPlanId: convertedPlanId }).save();
+      return true;
+    }
+  }
+
+  // Workout History/Session methods
+  async createWorkoutSession(data: Partial<IWorkoutSession>): Promise<IWorkoutSession> {
+    const session = new WorkoutSession(data);
+    return await session.save();
+  }
+
+  async getClientWorkoutHistory(clientId: string): Promise<IWorkoutSession[]> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    return await WorkoutSession.find({ clientId: convertedClientId }).populate('workoutPlanId').sort({ completedAt: -1 });
+  }
+
+  // Workout Notes methods
+  async getWorkoutNote(clientId: string, workoutPlanId: string): Promise<IWorkoutNote | null> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    const convertedPlanId = new mongoose.Types.ObjectId(workoutPlanId);
+    return await WorkoutNote.findOne({ clientId: convertedClientId, workoutPlanId: convertedPlanId });
+  }
+
+  async getAllWorkoutNotes(clientId: string): Promise<IWorkoutNote[]> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    return await WorkoutNote.find({ clientId: convertedClientId });
+  }
+
+  async saveWorkoutNote(clientId: string, workoutPlanId: string, notes: string): Promise<IWorkoutNote> {
+    const convertedClientId = new mongoose.Types.ObjectId(clientId);
+    const convertedPlanId = new mongoose.Types.ObjectId(workoutPlanId);
+    
+    let note = await WorkoutNote.findOne({ clientId: convertedClientId, workoutPlanId: convertedPlanId });
+    if (note) {
+      note.notes = notes;
+      note.updatedAt = new Date();
+      return await note.save();
+    } else {
+      const newNote = new WorkoutNote({
+        clientId: convertedClientId,
+        workoutPlanId: convertedPlanId,
+        notes
+      });
+      return await newNote.save();
+    }
   }
 
   // Diet Plan methods

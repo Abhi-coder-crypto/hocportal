@@ -2839,6 +2839,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Workout Bookmarks Routes
+  app.get("/api/clients/:clientId/workout-bookmarks", authenticateToken, async (req, res) => {
+    try {
+      const bookmarks = await storage.getClientWorkoutBookmarks(req.params.clientId);
+      res.json(bookmarks);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/clients/:clientId/workout-bookmarks/:planId", authenticateToken, async (req, res) => {
+    try {
+      await storage.toggleWorkoutBookmark(req.params.clientId, req.params.planId);
+      const bookmarks = await storage.getClientWorkoutBookmarks(req.params.clientId);
+      res.json(bookmarks);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.delete("/api/clients/:clientId/workout-bookmarks/:planId", authenticateToken, async (req, res) => {
+    try {
+      await storage.toggleWorkoutBookmark(req.params.clientId, req.params.planId);
+      const bookmarks = await storage.getClientWorkoutBookmarks(req.params.clientId);
+      res.json(bookmarks);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Workout History Routes
+  app.get("/api/clients/:clientId/workout-history", authenticateToken, async (req, res) => {
+    try {
+      const history = await storage.getClientWorkoutHistory(req.params.clientId);
+      res.json(history);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/clients/:clientId/workout-history", authenticateToken, async (req, res) => {
+    try {
+      const { workoutPlanId, workoutName, duration, notes } = req.body;
+      if (!workoutName || !duration) {
+        return res.status(400).json({ message: "Workout name and duration are required" });
+      }
+      const session = await storage.createWorkoutSession({
+        clientId: req.params.clientId,
+        workoutPlanId,
+        workoutName,
+        duration,
+        notes,
+        completedAt: new Date(),
+        caloriesBurned: 0
+      });
+      res.json(session);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Workout Notes Routes
+  app.get("/api/clients/:clientId/workout-notes", authenticateToken, async (req, res) => {
+    try {
+      const notes = await storage.getAllWorkoutNotes(req.params.clientId);
+      const notesMap: any = {};
+      notes.forEach((note: any) => {
+        notesMap[note.workoutPlanId.toString()] = note.notes;
+      });
+      res.json(notesMap);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/clients/:clientId/workout-notes/:planId", authenticateToken, async (req, res) => {
+    try {
+      const { notes } = req.body;
+      const savedNote = await storage.saveWorkoutNote(req.params.clientId, req.params.planId, notes || '');
+      res.json(savedNote);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // Package-Based Access & Assignment Endpoints
   app.get("/api/client-access/:clientId", authenticateToken, async (req, res) => {
     try {

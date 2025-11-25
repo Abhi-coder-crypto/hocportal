@@ -232,10 +232,23 @@ export interface IWorkoutSession extends Document {
   workoutPlanId?: string;
   workoutName: string;
   duration: number;
-  caloriesBurned: number;
-  exercises: any;
+  caloriesBurned?: number;
+  exercises?: any;
   completedAt: Date;
   notes?: string;
+}
+
+export interface IWorkoutBookmark extends Document {
+  clientId: string;
+  workoutPlanId: string;
+  bookmarkedAt: Date;
+}
+
+export interface IWorkoutNote extends Document {
+  clientId: string;
+  workoutPlanId: string;
+  notes: string;
+  updatedAt: Date;
 }
 
 export interface IVideoProgress extends Document {
@@ -583,10 +596,23 @@ const WorkoutSessionSchema = new Schema({
   workoutPlanId: { type: Schema.Types.ObjectId, ref: 'WorkoutPlan' },
   workoutName: { type: String, required: true },
   duration: { type: Number, required: true },
-  caloriesBurned: { type: Number, required: true },
+  caloriesBurned: { type: Number, default: 0 },
   exercises: { type: Schema.Types.Mixed },
   completedAt: { type: Date, default: Date.now },
   notes: String,
+});
+
+const WorkoutBookmarkSchema = new Schema({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  workoutPlanId: { type: Schema.Types.ObjectId, ref: 'WorkoutPlan', required: true },
+  bookmarkedAt: { type: Date, default: Date.now },
+});
+
+const WorkoutNoteSchema = new Schema({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  workoutPlanId: { type: Schema.Types.ObjectId, ref: 'WorkoutPlan', required: true },
+  notes: { type: String, default: '' },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const VideoProgressSchema = new Schema({
@@ -1244,3 +1270,5 @@ export const WaterIntake = mongoose.model<IWaterIntake>('WaterIntake', WaterInta
 export const WorkoutCompletion = mongoose.model<IWorkoutCompletion>('WorkoutCompletion', WorkoutCompletionSchema);
 export const DietPlanAssignment = mongoose.model<IDietPlanAssignment>('DietPlanAssignment', DietPlanAssignmentSchema);
 export const WorkoutPlanAssignment = mongoose.model<IWorkoutPlanAssignment>('WorkoutPlanAssignment', WorkoutPlanAssignmentSchema);
+export const WorkoutBookmark = mongoose.model<IWorkoutBookmark>('WorkoutBookmark', WorkoutBookmarkSchema);
+export const WorkoutNote = mongoose.model<IWorkoutNote>('WorkoutNote', WorkoutNoteSchema);

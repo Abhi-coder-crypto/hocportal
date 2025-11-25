@@ -382,235 +382,95 @@ export default function ClientDiet() {
                 </CardContent>
               </Card>
             ) : (
-              <>
-                {/* Header Card */}
-                <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 dark:from-green-950 dark:to-emerald-950 dark:border-green-800">
-                  <CardContent className="pt-6">
-                    <div className="text-center space-y-2 mb-6">
-                      <div className="w-full h-2 bg-green-400 rounded-full"></div>
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your personalized meal plan is ready</h2>
-                      {currentPlan?.name && (
-                        <p className="text-sm text-muted-foreground">Plan: {currentPlan.name}</p>
-                      )}
-                    </div>
+              <div className="space-y-6">
+                {/* Header with Plan Name */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Your Diet Plan</h1>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-muted-foreground">Personalized meal plan -</p>
+                    <Badge className="bg-orange-500">{currentPlan?.category || 'Custom'}</Badge>
+                  </div>
+                </div>
 
-                    {/* Day/Week Navigation */}
-                    <div className="flex items-center justify-between gap-4 mb-4">
-                      {Array.isArray(currentPlan?.meals) ? (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handlePrevWeek}
-                            disabled={!hasPrevWeek}
-                            data-testid="button-prev-week"
-                            className="flex items-center gap-2"
-                          >
-                            <ChevronLeft className="h-4 w-4" />
-                            Previous
-                          </Button>
-                          <div className="text-center">
-                            <p className="font-semibold text-gray-900 dark:text-white">
-                              {currentDayLabel}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {dayMeals.length} meals
-                            </p>
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleNextWeek}
-                            disabled={!hasNextWeek}
-                            data-testid="button-next-week"
-                            className="flex items-center gap-2"
-                          >
-                            Next
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const currentIdx = DAYS_OF_WEEK.indexOf(currentDay);
-                              if (currentIdx > 0) setCurrentDay(DAYS_OF_WEEK[currentIdx - 1]);
-                            }}
-                            disabled={DAYS_OF_WEEK.indexOf(currentDay) === 0}
-                            data-testid="button-prev-day"
-                            className="flex items-center gap-2"
-                          >
-                            <ChevronLeft className="h-4 w-4" />
-                            Previous
-                          </Button>
-                          <div className="text-center">
-                            <p className="font-semibold text-gray-900 dark:text-white">
-                              {currentDayLabel}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {dayMeals.length} meals
-                            </p>
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const currentIdx = DAYS_OF_WEEK.indexOf(currentDay);
-                              if (currentIdx < DAYS_OF_WEEK.length - 1) setCurrentDay(DAYS_OF_WEEK[currentIdx + 1]);
-                            }}
-                            disabled={DAYS_OF_WEEK.indexOf(currentDay) === DAYS_OF_WEEK.length - 1}
-                            data-testid="button-next-day"
-                            className="flex items-center gap-2"
-                          >
-                            Next
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Total Calories Card */}
-                    <div className="bg-orange-100 dark:bg-orange-900/30 rounded-lg p-4 mb-6 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Flame className="h-6 w-6 text-orange-500" />
-                        <span className="font-medium text-gray-800 dark:text-gray-200">{currentDayLabel} Total Calories</span>
+                {/* Nutrition Goals */}
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Nutrition Goals</h2>
+                    <div className="grid grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                          {currentPlan?.targetCalories || 2000}
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">Daily Calories</div>
                       </div>
-                      <span className="text-2xl font-bold text-orange-600 dark:text-orange-400">{totalCalories} Cal</span>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-red-600 dark:text-red-400">
+                          {currentPlan?.protein || 140}g
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">Protein</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-orange-600 dark:text-orange-400">
+                          {currentPlan?.carbs || 180}g
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">Carbs</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+                          {currentPlan?.fats || 68}g
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">Fats</div>
+                      </div>
                     </div>
-
-                    {/* Day Selection for multi-day plans */}
-                    {typeof currentPlan?.meals === 'object' && !Array.isArray(currentPlan.meals) && (
-                      <div className="mb-6 flex flex-wrap gap-2">
-                        {DAYS_OF_WEEK.map((day) => (
-                          <Button
-                            key={day}
-                            variant={currentDay === day ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => setCurrentDay(day)}
-                            disabled={!currentPlan.meals[day]}
-                            data-testid={`button-day-${day}`}
-                          >
-                            {day.slice(0, 3)}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Meals List */}
-                    {dayMeals.length === 0 ? (
-                      <Card className="border-dashed">
-                        <CardContent className="p-8 text-center">
-                          <UtensilsCrossed className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                          <p className="text-muted-foreground">No meals planned</p>
-                          <p className="text-sm text-muted-foreground mt-1">Contact your trainer to get a meal plan</p>
-                        </CardContent>
-                      </Card>
-                    ) : (
-                      <div className="space-y-3">
-                        {dayMeals.map((meal: any, idx: number) => {
-                          const config = getMealTypeIcon(idx);
-                          const IconComponent = config.icon;
-                          const mealName = meal.name || meal.type || 'Meal';
-                          const calories = meal.calories || 0;
-                          const protein = meal.protein || 0;
-                          const carbs = meal.carbs || 0;
-                          const fats = meal.fats || 0;
-                          
-                          return (
-                            <Card 
-                              key={idx} 
-                              className="border-0 bg-white dark:bg-slate-800 hover-elevate cursor-pointer transition-all"
-                              onClick={() => {
-                                setSelectedMeal({ ...meal, mealType: config.type });
-                                setShowRecipeModal(true);
-                              }}
-                              data-testid={`card-meal-recipe-${idx}`}
-                            >
-                              <CardContent className="p-4">
-                                <div className="flex items-start gap-4">
-                                  {/* Colored Icon Circle */}
-                                  <div className={`${config.bgColor} rounded-full p-3 flex items-center justify-center`}>
-                                    <IconComponent className={`h-6 w-6 ${config.iconColor}`} />
-                                  </div>
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <h4 className="font-semibold text-gray-900 dark:text-white">{mealName}</h4>
-                                      <Badge variant="outline" className="text-xs">
-                                        {meal.time || config.type}
-                                      </Badge>
-                                    </div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                      Protein: {protein}g • Carbs: {carbs}g • Fats: {fats}g
-                                    </p>
-                                  </div>
-                                  <Badge variant="secondary" className="bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-0">
-                                    {calories}Cal
-                                  </Badge>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          );
-                        })}
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
 
-                {/* Day/Week Navigation Buttons */}
-                {Array.isArray(currentPlan?.meals) ? (
-                  <div className="flex gap-3">
-                    <Button 
-                      onClick={handlePrevWeek} 
-                      disabled={!hasPrevWeek}
-                      variant="outline"
-                      className="flex-1 h-12 text-lg font-semibold"
-                      data-testid="button-prev-week-bottom"
-                    >
-                      <ChevronLeft className="h-5 w-5 mr-2" />
-                      Previous Week
-                    </Button>
-                    <Button 
-                      onClick={handleNextWeek} 
-                      disabled={!hasNextWeek}
-                      className="flex-1 bg-green-500 hover:bg-green-600 h-12 text-lg font-semibold"
-                      data-testid="button-next-week-bottom"
-                    >
-                      Next Week
-                      <ChevronRight className="h-5 w-5 ml-2" />
-                    </Button>
+                {/* Weekly Meal Plan */}
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Weekly Meal Plan</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {DAYS_OF_WEEK.slice(0, 3).map((day) => {
+                      const dayMealsData = currentPlan?.meals?.[day];
+                      if (!dayMealsData) return null;
+                      
+                      const mealsList = Object.entries(dayMealsData).map(([type, data]: [string, any]) => ({ type, ...data }));
+                      const dayTotal = mealsList.reduce((sum: number, meal: any) => sum + (Number(meal.calories) || 0), 0);
+                      
+                      return (
+                        <Card key={day} className="hover-elevate">
+                          <CardContent className="p-5">
+                            <div className="flex items-center justify-between mb-4">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{day}</h3>
+                              <Badge className="bg-blue-500">{dayTotal} cal</Badge>
+                            </div>
+                            <div className="space-y-3">
+                              {mealsList.map((meal: any, idx: number) => (
+                                <div key={idx} className="border-l-4 border-l-blue-500 pl-3 py-2">
+                                  <div className="text-xs text-muted-foreground">7:00 AM</div>
+                                  <div className="font-semibold text-gray-900 dark:text-white text-sm">{meal.type}</div>
+                                  <div className="text-xs text-muted-foreground mt-1">
+                                    P: {Number(meal.protein) || 0}g • C: {Number(meal.carbs) || 0}g • F: {Number(meal.fats) || 0}g
+                                  </div>
+                                  <div className="text-sm font-semibold text-orange-600 dark:text-orange-400 mt-1">
+                                    {Number(meal.calories) || 0} cal
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
-                ) : (
-                  <div className="flex gap-3">
-                    <Button 
-                      onClick={() => {
-                        const currentIdx = DAYS_OF_WEEK.indexOf(currentDay);
-                        if (currentIdx > 0) setCurrentDay(DAYS_OF_WEEK[currentIdx - 1]);
-                      }}
-                      disabled={DAYS_OF_WEEK.indexOf(currentDay) === 0}
-                      variant="outline"
-                      className="flex-1 h-12 text-lg font-semibold"
-                      data-testid="button-prev-day-bottom"
-                    >
-                      <ChevronLeft className="h-5 w-5 mr-2" />
-                      Previous Day
-                    </Button>
-                    <Button 
-                      onClick={() => {
-                        const currentIdx = DAYS_OF_WEEK.indexOf(currentDay);
-                        if (currentIdx < DAYS_OF_WEEK.length - 1) setCurrentDay(DAYS_OF_WEEK[currentIdx + 1]);
-                      }}
-                      disabled={DAYS_OF_WEEK.indexOf(currentDay) === DAYS_OF_WEEK.length - 1}
-                      className="flex-1 bg-green-500 hover:bg-green-600 h-12 text-lg font-semibold"
-                      data-testid="button-next-day-bottom"
-                    >
-                      Next Day
-                      <ChevronRight className="h-5 w-5 ml-2" />
-                    </Button>
-                  </div>
-                )}
-              </>
+                </div>
+
+                {/* View All Days Button */}
+                <Button variant="outline" className="w-full">
+                  View All Days
+                </Button>
+              </div>
             )}
           </TabsContent>
 

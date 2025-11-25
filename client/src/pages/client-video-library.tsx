@@ -230,7 +230,7 @@ export default function ClientVideoLibrary() {
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm z-10"
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white z-10"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleToggleBookmark(video._id);
@@ -238,9 +238,9 @@ export default function ClientVideoLibrary() {
                       data-testid={`button-bookmark-${video._id}`}
                     >
                       {isBookmarked ? (
-                        <BookmarkCheck className="h-4 w-4 text-primary" />
+                        <BookmarkCheck className="h-5 w-5 fill-white" />
                       ) : (
-                        <Bookmark className="h-4 w-4" />
+                        <Bookmark className="h-5 w-5" />
                       )}
                     </Button>
                     {video.duration && (

@@ -73,7 +73,11 @@ export default function AdminDietPlans() {
   });
 
   const { data: assignments = [], isLoading: assignmentsLoading } = useQuery<any[]>({
-    queryKey: ['/api/diet-plans-with-assignments'],
+    queryKey: ['/api/diet-plan-templates'],
+    queryFn: async () => {
+      const res = await fetch('/api/diet-plan-templates?assigned=true');
+      return res.json();
+    },
     enabled: !!currentUser, // Only run query when user is loaded
   });
 

@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Calendar, Video, UtensilsCrossed, User, ChevronDown, TrendingUp, Scale, Ruler, Trophy, FileText, Image, Menu, X, ArrowLeft, Calculator, LayoutDashboard, Flame, Zap, Target, Camera, BarChart3, LogOut, Phone, Dumbbell } from "lucide-react";
+import { Calendar, Video, UtensilsCrossed, User, ChevronDown, TrendingUp, Scale, Ruler, Trophy, FileText, Image, Menu, X, ArrowLeft, Calculator, LayoutDashboard, Flame, Zap, Target, Camera, BarChart3, LogOut, Phone, Dumbbell, CheckCircle } from "lucide-react";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import { queryClient } from "@/lib/queryClient";
@@ -102,6 +102,18 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
               <UtensilsCrossed className="h-5 w-5 mr-2 text-orange-600" />
               <span className="hidden xl:inline font-medium">Diet</span>
             </Button>
+
+            {isProOrElite && (
+              <Button 
+                variant="ghost" 
+                className={`${currentPage === 'habits' ? 'nav-underline-green' : ''} px-4`}
+                onClick={() => setLocation("/client/habits")}
+                data-testid="link-habits"
+              >
+                <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
+                <span className="hidden xl:inline font-medium">Habits</span>
+              </Button>
+            )}
 
             <Button 
               variant="ghost" 

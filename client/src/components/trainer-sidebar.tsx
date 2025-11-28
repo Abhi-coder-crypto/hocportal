@@ -1,4 +1,4 @@
-import { Users, Video, UtensilsCrossed, Calendar, BarChart3, LogOut, LayoutDashboard } from "lucide-react";
+import { Users, Video, UtensilsCrossed, Calendar, BarChart3, LogOut, LayoutDashboard, CheckCircle } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import logoImage from "@assets/TWWLOGO_1763965276890.png";
 import {
@@ -21,6 +21,7 @@ const menuItems = [
   { title: "My Clients", icon: Users, url: "/trainer/clients" },
   { title: "Live Sessions", icon: Calendar, url: "/trainer/sessions" },
   { title: "Diet & Workout", icon: UtensilsCrossed, url: "/trainer/diet" },
+  { title: "Habit Tracking", icon: CheckCircle, url: "/trainer/habits" },
   { title: "Video Library", icon: Video, url: "/trainer/videos" },
   { title: "My Analytics", icon: BarChart3, url: "/trainer/analytics" },
 ];

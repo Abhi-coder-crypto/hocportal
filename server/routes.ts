@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { PaymentHistory, Invoice, Refund, PaymentReminder, VideoProgress, LiveSession, WorkoutPlan, DietPlan } from "./models";
+import { PaymentHistory, Invoice, Refund, PaymentReminder, VideoProgress, LiveSession, WorkoutPlan, DietPlan, Habit, HabitLog } from "./models";
 import mongoose from "mongoose";
 import { hashPassword, comparePassword, validateEmail, validatePassword } from "./utils/auth";
 import { generateAccessToken, generateRefreshToken } from "./utils/jwt";
@@ -6122,6 +6122,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       res.json(alerts);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Habit Tracking Routes
+  // Create habit (trainer assigns to client)
+  app.post('/api/habits', authenticateToken, async (req, res) => {
+    try {
+      const { clientId, name, description, frequency = 'daily' } = req.body;
+      const user = (req as any).user;
+      
+      const habit = await Habit.create({
+        clientId,
+        trainerId: user._id,
+        name,
+        description,
+        frequency,
+      });
+      
+      res.json(habit);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get habits for a client
+  app.get('/api/habits/client/:clientId', authenticateToken, async (req, res) => {
+    try {
+      const { clientId } = req.params;
+      const habits = await Habit.find({ clientId }).sort({ createdAt: -1 });
+      res.json(habits);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get all habits assigned by trainer
+  app.get('/api/trainers/:trainerId/habits', authenticateToken, async (req, res) => {
+    try {
+      const { trainerId } = req.params;
+      const habits = await Habit.find({ trainerId }).populate('clientId', 'name').sort({ createdAt: -1 });
+      res.json(habits);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get habit logs for a client's habit
+  app.get('/api/habits/:habitId/logs', authenticateToken, async (req, res) => {
+    try {
+      const { habitId } = req.params;
+      const logs = await HabitLog.find({ habitId }).sort({ date: -1 });
+      res.json(logs);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Log habit completion (client marks done)
+  app.post('/api/habits/:habitId/log', authenticateToken, async (req, res) => {
+    try {
+      const { habitId } = req.params;
+      const { completed, date, notes } = req.body;
+      
+      const habit = await Habit.findById(habitId);
+      if (!habit) return res.status(404).json({ message: 'Habit not found' });
+      
+      // Check if log already exists for this date
+      const existingLog = await HabitLog.findOne({
+        habitId,
+        date: new Date(date).toDateString(),
+      });
+      
+      if (existingLog) {
+        existingLog.completed = completed;
+        existingLog.notes = notes;
+        await existingLog.save();
+        return res.json(existingLog);
+      }
+      
+      const log = await HabitLog.create({
+        habitId,
+        clientId: habit.clientId,
+        date: new Date(date),
+        completed,
+        notes,
+      });
+      
+      res.json(log);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Delete habit
+  app.delete('/api/habits/:habitId', authenticateToken, async (req, res) => {
+    try {
+      const { habitId } = req.params;
+      await Habit.findByIdAndDelete(habitId);
+      await HabitLog.deleteMany({ habitId });
+      res.json({ message: 'Habit deleted' });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

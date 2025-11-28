@@ -1242,6 +1242,45 @@ const WorkoutCompletionSchema = new Schema({
   notes: String,
 });
 
+// Habit Tracking
+export interface IHabit extends Document {
+  clientId: string;
+  trainerId: string;
+  name: string;
+  description?: string;
+  frequency: 'daily' | 'weekly'; // How often to track
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const HabitSchema = new Schema({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  trainerId: { type: Schema.Types.ObjectId, ref: 'Trainer', required: true },
+  name: { type: String, required: true },
+  description: String,
+  frequency: { type: String, enum: ['daily', 'weekly'], default: 'daily' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export interface IHabitLog extends Document {
+  habitId: string;
+  clientId: string;
+  date: Date;
+  completed: boolean;
+  notes?: string;
+  createdAt: Date;
+}
+
+const HabitLogSchema = new Schema({
+  habitId: { type: Schema.Types.ObjectId, ref: 'Habit', required: true },
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  date: { type: Date, required: true },
+  completed: { type: Boolean, default: false },
+  notes: String,
+  createdAt: { type: Date, default: Date.now },
+});
+
 export const Package = mongoose.model<IPackage>('Package', PackageSchema);
 export const Trainer = mongoose.model<ITrainer>('Trainer', TrainerSchema);
 export const Client = mongoose.model<IClient>('Client', ClientSchema);
@@ -1273,3 +1312,5 @@ export const DietPlanAssignment = mongoose.model<IDietPlanAssignment>('DietPlanA
 export const WorkoutPlanAssignment = mongoose.model<IWorkoutPlanAssignment>('WorkoutPlanAssignment', WorkoutPlanAssignmentSchema);
 export const WorkoutBookmark = mongoose.model<IWorkoutBookmark>('WorkoutBookmark', WorkoutBookmarkSchema);
 export const WorkoutNote = mongoose.model<IWorkoutNote>('WorkoutNote', WorkoutNoteSchema);
+export const Habit = mongoose.model<IHabit>('Habit', HabitSchema);
+export const HabitLog = mongoose.model<IHabitLog>('HabitLog', HabitLogSchema);

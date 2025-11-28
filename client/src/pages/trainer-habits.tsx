@@ -109,6 +109,7 @@ export default function TrainerHabits() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/trainers", trainerId, "habits"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/client/habits"] });
       setIsAddDialogOpen(false);
       setSelectedClient("");
       setHabitName("");
@@ -119,10 +120,11 @@ export default function TrainerHabits() {
         description: "Habit assigned successfully",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Habit creation error:", error);
       toast({
         title: "Error",
-        description: "Failed to assign habit",
+        description: error?.message || "Failed to assign habit",
         variant: "destructive",
       });
     },
@@ -135,6 +137,8 @@ export default function TrainerHabits() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/trainers", trainerId, "habits"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/client/habits"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/habits"] });
       toast({
         title: "Success",
         description: "Habit deleted successfully",
@@ -150,7 +154,7 @@ export default function TrainerHabits() {
   });
 
   const handleAddHabit = async () => {
-    if (!selectedClient || !habitName) {
+    if (!selectedClient || !habitName || !trainerId) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
@@ -160,6 +164,7 @@ export default function TrainerHabits() {
     }
 
     createHabitMutation.mutate({
+      trainerId: trainerId,
       clientId: selectedClient,
       name: habitName,
       description: habitDescription,

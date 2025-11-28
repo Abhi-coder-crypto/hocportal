@@ -39,6 +39,7 @@ export interface IClient extends Document {
   otherDocument?: string;
   medicalConditions?: string[];
   injuries?: string[];
+  allergies?: string[];
   fitnessLevel?: 'beginner' | 'intermediate' | 'advanced';
   limitations?: string;
   language?: 'en' | 'hi';

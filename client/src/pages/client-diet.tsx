@@ -14,53 +14,37 @@ import {
   AlertTriangle,
   Download,
   ChefHat,
+  Flame,
 } from "lucide-react";
 
 const DAYS_OF_WEEK = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
-const MEAL_TYPES = ["BREAKFAST", "LUNCH", "SNACK", "DINNER"];
-
-interface Dish {
-  name: string;
-  quantity?: string;
-  calories?: number;
-  protein?: number;
-  carbs?: number;
-  fats?: number;
-}
+const MEAL_TYPES = ["breakfast", "lunch", "snack", "dinner"];
 
 interface Meal {
-  time?: string;
+  name: string;
   calories?: number;
   protein?: number;
   carbs?: number;
   fats?: number;
-  dishes?: Dish[];
-  name?: string;
-}
-
-interface DayMeals {
-  [mealType: string]: Meal;
+  dishes?: Array<{ name: string; quantity?: string }>;
 }
 
 interface DietPlan {
   _id: string;
   name: string;
   description?: string;
-  category?: string;
-  targetCalories: number;
+  meals: Record<string, Meal>;
+  targetCalories?: number;
   protein?: number;
   carbs?: number;
   fats?: number;
-  meals: Record<string, DayMeals>;
-  createdAt: string;
-  updatedAt?: string;
 }
 
 export default function ClientDiet() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [clientId, setClientId] = useState<string | null>(null);
-  const [selectedMeal, setSelectedMeal] = useState<{ day: string; mealType: string } | null>(null);
+  const [selectedMeal, setSelectedMeal] = useState<string | null>(null);
   const [showGroceryList, setShowGroceryList] = useState(false);
 
   useEffect(() => {
@@ -78,9 +62,7 @@ export default function ClientDiet() {
       if (!clientId) return [];
       const url = `/api/diet-plans?clientId=${clientId}`;
       const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Failed to fetch diet plans");
-      }
+      if (!response.ok) throw new Error("Failed to fetch diet plans");
       return response.json();
     },
     enabled: !!clientId,
@@ -91,40 +73,65 @@ export default function ClientDiet() {
 
   const currentPlan = dietPlans?.[0];
 
-  const getMealsForDay = (day: string): DayMeals => {
-    return currentPlan?.meals?.[day] || {};
-  };
-
-  const getMealByType = (day: string, mealType: string): Meal | undefined => {
-    const dayMeals = getMealsForDay(day);
-    return dayMeals[mealType.toLowerCase()];
-  };
-
-  const generateGroceryListForDay = (day: string): string[] => {
-    const items: string[] = [];
-    const dayMeals = getMealsForDay(day);
+  const getMealForDayAndType = (dayIndex: number, mealType: string): Meal | undefined => {
+    if (!currentPlan?.meals) return undefined;
     
-    Object.values(dayMeals).forEach((meal: Meal) => {
-      if (meal?.dishes && Array.isArray(meal.dishes)) {
-        meal.dishes.forEach((dish: Dish) => {
-          if (dish.name) {
-            const itemText = dish.quantity ? `${dish.name} - ${dish.quantity}` : dish.name;
-            if (!items.includes(itemText)) {
-              items.push(itemText);
-            }
-          }
+    // Calculate which meal group this day/type combination falls into
+    // Each day repeats the meal type pattern, so we cycle through meals
+    const mealsArray = Object.entries(currentPlan.meals).filter(([key]) => 
+      key.toLowerCase().startsWith(mealType.toLowerCase())
+    );
+    
+    if (mealsArray.length === 0) return undefined;
+    
+    // Get the meal for this day (cycle through available meals)
+    const mealIndex = dayIndex % mealsArray.length;
+    return mealsArray[mealIndex]?.[1];
+  };
+
+  const getMealsByType = (mealType: string): Meal | undefined => {
+    return currentPlan?.meals?.[mealType];
+  };
+
+  const getTotalMacrosForDay = (dayIndex: number) => {
+    let totalCalories = 0;
+    let totalProtein = 0;
+    let totalCarbs = 0;
+    let totalFats = 0;
+
+    MEAL_TYPES.forEach((mealType) => {
+      const meal = getMealForDayAndType(dayIndex, mealType);
+      if (meal) {
+        totalCalories += meal.calories || 0;
+        totalProtein += meal.protein || 0;
+        totalCarbs += meal.carbs || 0;
+        totalFats += meal.fats || 0;
+      }
+    });
+
+    return { totalCalories, totalProtein, totalCarbs, totalFats };
+  };
+
+  const generateGroceryList = (dayIndex: number): string[] => {
+    const items: Set<string> = new Set();
+    
+    MEAL_TYPES.forEach((mealType) => {
+      const meal = getMealForDayAndType(dayIndex, mealType);
+      if (meal?.dishes) {
+        meal.dishes.forEach((dish) => {
+          const text = dish.quantity ? `${dish.name} - ${dish.quantity}` : dish.name;
+          items.add(text);
         });
       }
     });
     
-    return items;
+    return Array.from(items);
   };
 
-  const downloadGroceryList = () => {
-    if (!selectedMeal) return;
-    
-    const items = generateGroceryListForDay(selectedMeal.day);
-    const content = `GROCERY LIST - ${selectedMeal.day.toUpperCase()}
+  const downloadGroceryList = (dayIndex: number) => {
+    const items = generateGroceryList(dayIndex);
+    const dayName = DAYS_OF_WEEK[dayIndex];
+    const content = `GROCERY LIST - ${dayName.toUpperCase()}
 ${currentPlan?.name || "Diet Plan"}
 Generated: ${new Date().toLocaleDateString()}
 ${"=".repeat(40)}
@@ -139,7 +146,7 @@ Total Items: ${items.length}
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `grocery-list-${selectedMeal.day.toLowerCase()}.txt`;
+    a.download = `grocery-list-${dayName.toLowerCase()}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -147,7 +154,7 @@ Total Items: ${items.length}
     
     toast({
       title: "Downloaded",
-      description: `Grocery list for ${selectedMeal.day} downloaded successfully`,
+      description: `Grocery list for ${dayName} downloaded successfully`,
     });
   };
 
@@ -169,7 +176,7 @@ Total Items: ${items.length}
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-2">No Diet Plan Assigned</h2>
           <p className="text-muted-foreground">Contact your trainer to get a personalized diet plan</p>
-          <Button onClick={() => setLocation("/client-dashboard")} className="mt-4" data-testid="button-back-dashboard">
+          <Button onClick={() => setLocation("/client-dashboard")} className="mt-4">
             Back to Dashboard
           </Button>
         </div>
@@ -187,9 +194,7 @@ Total Items: ${items.length}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <UtensilsCrossed className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold" data-testid="text-plan-name">
-              {currentPlan.name}
-            </h1>
+            <h1 className="text-3xl font-bold">{currentPlan.name}</h1>
           </div>
           {currentPlan.description && (
             <p className="text-muted-foreground text-sm">{currentPlan.description}</p>
@@ -206,66 +211,87 @@ Total Items: ${items.length}
                   {MEAL_TYPES.map((mealType) => (
                     <th
                       key={mealType}
-                      className="px-6 py-4 text-left font-semibold text-primary min-w-60"
+                      className="px-6 py-4 text-left font-semibold text-primary min-w-80"
                     >
-                      {mealType}
+                      {mealType.toUpperCase()}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {DAYS_OF_WEEK.map((day, dayIdx) => (
-                  <tr
-                    key={day}
-                    className={`border-b transition-colors ${
-                      dayIdx % 2 === 0 ? "bg-white dark:bg-slate-950" : "bg-slate-50/50 dark:bg-slate-900/50"
-                    } hover:bg-primary/5`}
-                  >
-                    <td className="px-6 py-4">
-                      <Badge variant="secondary" className="font-semibold">
-                        {day}
-                      </Badge>
-                    </td>
-                    {MEAL_TYPES.map((mealType) => {
-                      const meal = getMealByType(day, mealType);
-                      return (
-                        <td
-                          key={`${day}-${mealType}`}
-                          className="px-6 py-4"
-                        >
-                          {meal && meal.dishes && meal.dishes.length > 0 ? (
-                            <button
-                              onClick={() => {
-                                setSelectedMeal({ day, mealType });
-                                setShowGroceryList(false);
-                              }}
-                              className="text-left hover-elevate group transition-all"
-                              data-testid={`button-meal-${day}-${mealType}`}
-                            >
-                              <div className="space-y-1">
-                                <p className="font-medium text-foreground group-hover:text-primary transition-colors">
-                                  {meal.dishes[0]?.name}
-                                </p>
-                                {meal.dishes.length > 1 && (
-                                  <p className="text-xs text-muted-foreground">
-                                    +{meal.dishes.length - 1} more
+                {DAYS_OF_WEEK.map((day, dayIdx) => {
+                  const macros = getTotalMacrosForDay(dayIdx);
+                  return (
+                    <tr
+                      key={day}
+                      className={`border-b transition-colors ${
+                        dayIdx % 2 === 0 ? "bg-white dark:bg-slate-950" : "bg-slate-50/50 dark:bg-slate-900/50"
+                      } hover:bg-primary/5`}
+                    >
+                      <td className="px-6 py-4">
+                        <div>
+                          <Badge variant="secondary" className="font-semibold mb-2">
+                            {day}
+                          </Badge>
+                          <div className="text-xs space-y-1">
+                            <div className="flex gap-2">
+                              <span className="font-semibold text-orange-600 dark:text-orange-400">{macros.totalCalories} cal</span>
+                            </div>
+                            <div className="flex gap-2 text-muted-foreground text-xs">
+                              <span>P: {macros.totalProtein}g</span>
+                              <span>C: {macros.totalCarbs}g</span>
+                              <span>F: {macros.totalFats}g</span>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      {MEAL_TYPES.map((mealType) => {
+                        const meal = getMealForDayAndType(dayIdx, mealType);
+                        return (
+                          <td key={`${day}-${mealType}`} className="px-6 py-4">
+                            {meal ? (
+                              <button
+                                onClick={() => {
+                                  setSelectedMeal(`${dayIdx}-${mealType}`);
+                                  setShowGroceryList(false);
+                                }}
+                                className="text-left hover-elevate group transition-all w-full"
+                              >
+                                <div className="space-y-2">
+                                  <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                                    {meal.name}
                                   </p>
-                                )}
-                                {meal.calories && (
-                                  <p className="text-xs text-muted-foreground">
-                                    {meal.calories} cal
-                                  </p>
-                                )}
-                              </div>
-                            </button>
-                          ) : (
-                            <p className="text-muted-foreground text-sm">-</p>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
+                                  <div className="grid grid-cols-3 gap-2 text-xs">
+                                    <div className="bg-blue-50 dark:bg-blue-950/30 rounded p-2 text-center">
+                                      <p className="text-muted-foreground">Protein</p>
+                                      <p className="font-bold text-blue-600 dark:text-blue-400">{meal.protein || 0}g</p>
+                                    </div>
+                                    <div className="bg-orange-50 dark:bg-orange-950/30 rounded p-2 text-center">
+                                      <p className="text-muted-foreground">Carbs</p>
+                                      <p className="font-bold text-orange-600 dark:text-orange-400">{meal.carbs || 0}g</p>
+                                    </div>
+                                    <div className="bg-primary/10 rounded p-2 text-center">
+                                      <p className="text-muted-foreground">Fats</p>
+                                      <p className="font-bold text-primary">{meal.fats || 0}g</p>
+                                    </div>
+                                  </div>
+                                  {meal.calories && (
+                                    <div className="flex items-center gap-1 text-xs font-semibold text-orange-600 dark:text-orange-400">
+                                      <Flame className="h-3 w-3" />
+                                      {meal.calories} cal
+                                    </div>
+                                  )}
+                                </div>
+                              </button>
+                            ) : (
+                              <p className="text-muted-foreground text-sm">-</p>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -282,73 +308,46 @@ Total Items: ${items.length}
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <ChefHat className="h-5 w-5" />
-                {selectedMeal?.day} - {selectedMeal?.mealType}
+                {selectedMeal && (() => {
+                  const [dayIdx, mealType] = selectedMeal.split("-");
+                  return `${DAYS_OF_WEEK[parseInt(dayIdx)]} - ${mealType.toUpperCase()}`;
+                })()}
               </DialogTitle>
             </DialogHeader>
 
-            {selectedMeal && getMealByType(selectedMeal.day, selectedMeal.mealType) && (() => {
-              const meal = getMealByType(selectedMeal.day, selectedMeal.mealType)!;
-              const groceryItems = generateGroceryListForDay(selectedMeal.day);
+            {selectedMeal && (() => {
+              const [dayIdx, mealType] = selectedMeal.split("-");
+              const meal = getMealForDayAndType(parseInt(dayIdx), mealType);
+              const groceryItems = generateGroceryList(parseInt(dayIdx));
+
+              if (!meal) return null;
+
               return (
                 <div className="space-y-6">
-                  {/* Dishes */}
-                  {meal.dishes && meal.dishes.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold mb-3 flex items-center gap-2">
-                        <UtensilsCrossed className="h-4 w-4" />
-                        Dishes
-                      </h3>
-                      <div className="space-y-2 max-h-64 overflow-y-auto">
-                        {meal.dishes.map((dish, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center justify-between p-3 bg-primary/5 rounded-lg border border-primary/10"
-                          >
-                            <span className="font-medium">{dish.name}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {dish.quantity || "1 serving"}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
+                  {/* Nutrition Macros */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 border border-blue-200 dark:border-blue-900">
+                      <p className="text-xs text-muted-foreground mb-1">Protein</p>
+                      <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{meal.protein || 0}g</p>
                     </div>
-                  )}
-
-                  {/* Nutrition */}
-                  {(meal.protein || meal.carbs || meal.fats) && (
-                    <div className="grid grid-cols-3 gap-3">
-                      {meal.protein && (
-                        <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3 border border-blue-200 dark:border-blue-900">
-                          <p className="text-xs text-muted-foreground mb-1">Protein</p>
-                          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                            {meal.protein}g
-                          </p>
-                        </div>
-                      )}
-                      {meal.carbs && (
-                        <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-3 border border-orange-200 dark:border-orange-900">
-                          <p className="text-xs text-muted-foreground mb-1">Carbs</p>
-                          <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                            {meal.carbs}g
-                          </p>
-                        </div>
-                      )}
-                      {meal.fats && (
-                        <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
-                          <p className="text-xs text-muted-foreground mb-1">Fats</p>
-                          <p className="text-2xl font-bold text-primary">
-                            {meal.fats}g
-                          </p>
-                        </div>
-                      )}
+                    <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-4 border border-orange-200 dark:border-orange-900">
+                      <p className="text-xs text-muted-foreground mb-1">Carbs</p>
+                      <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{meal.carbs || 0}g</p>
                     </div>
-                  )}
+                    <div className="bg-primary/10 rounded-lg p-4 border border-primary/20">
+                      <p className="text-xs text-muted-foreground mb-1">Fats</p>
+                      <p className="text-3xl font-bold text-primary">{meal.fats || 0}g</p>
+                    </div>
+                  </div>
 
                   {/* Calories */}
                   {meal.calories && (
                     <div className="bg-gradient-to-r from-primary/10 to-orange-100/30 rounded-lg p-4 border border-primary/20">
                       <p className="text-sm text-muted-foreground mb-1">Total Calories</p>
-                      <p className="text-3xl font-bold text-primary">{meal.calories}</p>
+                      <div className="flex items-center gap-2">
+                        <Flame className="h-6 w-6 text-orange-500" />
+                        <p className="text-3xl font-bold text-primary">{meal.calories}</p>
+                      </div>
                     </div>
                   )}
 
@@ -373,11 +372,12 @@ Total Items: ${items.length}
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <ShoppingCart className="h-5 w-5" />
-                Grocery List - {selectedMeal?.day}
+                Grocery List - {selectedMeal && DAYS_OF_WEEK[parseInt(selectedMeal.split("-")[0])]}
               </DialogTitle>
             </DialogHeader>
             {selectedMeal && (() => {
-              const groceryItems = generateGroceryListForDay(selectedMeal.day);
+              const dayIdx = parseInt(selectedMeal.split("-")[0]);
+              const groceryItems = generateGroceryList(dayIdx);
               return (
                 <div>
                   <div className="max-h-80 overflow-y-auto mb-4">
@@ -392,12 +392,12 @@ Total Items: ${items.length}
                       </ul>
                     ) : (
                       <p className="text-center text-muted-foreground py-8">
-                        No grocery items for {selectedMeal.day}
+                        No grocery items for {DAYS_OF_WEEK[dayIdx]}
                       </p>
                     )}
                   </div>
                   <Button
-                    onClick={downloadGroceryList}
+                    onClick={() => downloadGroceryList(dayIdx)}
                     disabled={groceryItems.length === 0}
                     className="w-full"
                   >

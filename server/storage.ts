@@ -839,10 +839,17 @@ export class MongoStorage implements IStorage {
   }
 
   async assignWorkoutPlanToClient(workoutPlanId: string, clientId: string): Promise<IWorkoutPlan | null> {
-    // Check if assignment already exists to prevent duplicates
+    // Convert IDs
     const convertedClientId = new mongoose.Types.ObjectId(clientId);
     const convertedPlanId = new mongoose.Types.ObjectId(workoutPlanId);
     
+    // Remove all OTHER workout assignments for this client (keep only the new one)
+    await WorkoutPlanAssignment.deleteMany({
+      clientId: convertedClientId,
+      workoutPlanId: { $ne: convertedPlanId }
+    });
+    
+    // Check if assignment to this specific plan already exists
     const existingAssignment = await WorkoutPlanAssignment.findOne({
       workoutPlanId: convertedPlanId,
       clientId: convertedClientId
@@ -865,6 +872,12 @@ export class MongoStorage implements IStorage {
     
     for (const clientId of clientIds) {
       const convertedClientId = new mongoose.Types.ObjectId(clientId);
+      
+      // Remove all OTHER workout assignments for this client (keep only the new one)
+      await WorkoutPlanAssignment.deleteMany({
+        clientId: convertedClientId,
+        workoutPlanId: { $ne: convertedPlanId }
+      });
       
       // Check if assignment already exists to prevent duplicates
       const existingAssignment = await WorkoutPlanAssignment.findOne({
@@ -1156,6 +1169,13 @@ export class MongoStorage implements IStorage {
       
       console.log(`[Assign Diet] Converting assignment - Plan: ${convertedPlanId.toString()}, Client: ${convertedClientId.toString()}`);
       
+      // Remove all OTHER diet assignments for this client (keep only the new one)
+      await DietPlanAssignment.deleteMany({
+        clientId: convertedClientId,
+        dietPlanId: { $ne: convertedPlanId }
+      });
+      console.log(`[Assign Diet] Removed other diet assignments for client`);
+      
       // Check if assignment already exists to prevent duplicates
       const existingAssignment = await DietPlanAssignment.findOne({
         dietPlanId: convertedPlanId,
@@ -1188,6 +1208,12 @@ export class MongoStorage implements IStorage {
     
     for (const clientId of clientIds) {
       const convertedClientId = new mongoose.Types.ObjectId(clientId);
+      
+      // Remove all OTHER diet assignments for this client (keep only the new one)
+      await DietPlanAssignment.deleteMany({
+        clientId: convertedClientId,
+        dietPlanId: { $ne: convertedPlanId }
+      });
       
       // Check if assignment already exists to prevent duplicates
       const existingAssignment = await DietPlanAssignment.findOne({

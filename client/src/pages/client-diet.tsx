@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { ClientHeader } from "@/components/client-header";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { MobileNavigation } from "@/components/mobile-navigation";
@@ -34,6 +34,7 @@ interface DietPlan {
   name: string;
   description?: string;
   meals: Record<string, Meal>;
+  date?: string;
   targetCalories?: number;
   protein?: number;
   carbs?: number;
@@ -76,21 +77,14 @@ export default function ClientDiet() {
   const getMealForDayAndType = (dayIndex: number, mealType: string): Meal | undefined => {
     if (!currentPlan?.meals) return undefined;
     
-    // Calculate which meal group this day/type combination falls into
-    // Each day repeats the meal type pattern, so we cycle through meals
     const mealsArray = Object.entries(currentPlan.meals).filter(([key]) => 
       key.toLowerCase().startsWith(mealType.toLowerCase())
     );
     
     if (mealsArray.length === 0) return undefined;
     
-    // Get the meal for this day (cycle through available meals)
     const mealIndex = dayIndex % mealsArray.length;
     return mealsArray[mealIndex]?.[1];
-  };
-
-  const getMealsByType = (mealType: string): Meal | undefined => {
-    return currentPlan?.meals?.[mealType];
   };
 
   const getTotalMacrosForDay = (dayIndex: number) => {
@@ -194,108 +188,128 @@ Total Items: ${items.length}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <UtensilsCrossed className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">{currentPlan.name}</h1>
+            <div>
+              <h1 className="text-3xl font-bold">{currentPlan.name}</h1>
+              {currentPlan.date && (
+                <p className="text-sm text-muted-foreground">Valid from {new Date(currentPlan.date).toLocaleDateString()}</p>
+              )}
+            </div>
           </div>
           {currentPlan.description && (
             <p className="text-muted-foreground text-sm">{currentPlan.description}</p>
           )}
         </div>
 
-        {/* Table Container */}
-        <Card className="border-0 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gradient-to-r from-primary/10 to-primary/5 border-b-2 border-primary/20">
-                  <th className="px-6 py-4 text-left font-semibold text-primary">DAYS</th>
-                  {MEAL_TYPES.map((mealType) => (
-                    <th
-                      key={mealType}
-                      className="px-6 py-4 text-left font-semibold text-primary min-w-80"
-                    >
-                      {mealType.toUpperCase()}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {DAYS_OF_WEEK.map((day, dayIdx) => {
-                  const macros = getTotalMacrosForDay(dayIdx);
-                  return (
-                    <tr
-                      key={day}
-                      className={`border-b transition-colors ${
-                        dayIdx % 2 === 0 ? "bg-white dark:bg-slate-950" : "bg-slate-50/50 dark:bg-slate-900/50"
-                      } hover:bg-primary/5`}
-                    >
-                      <td className="px-6 py-4">
-                        <div>
-                          <Badge variant="secondary" className="font-semibold mb-2">
-                            {day}
-                          </Badge>
-                          <div className="text-xs space-y-1">
-                            <div className="flex gap-2">
-                              <span className="font-semibold text-orange-600 dark:text-orange-400">{macros.totalCalories} cal</span>
+        {/* Horizontal Cards */}
+        <div className="space-y-6">
+          {DAYS_OF_WEEK.map((day, dayIdx) => {
+            const macros = getTotalMacrosForDay(dayIdx);
+            return (
+              <Card key={day} className="overflow-hidden border-2 border-primary/10 hover:border-primary/20 transition-colors">
+                <CardContent className="p-0">
+                  <div className="flex items-stretch min-h-[280px]">
+                    {/* Day Summary Sidebar */}
+                    <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-r-2 border-primary/20 px-6 py-4 flex flex-col justify-between min-w-[180px]">
+                      <div>
+                        <Badge variant="secondary" className="font-semibold mb-4 text-base px-3 py-1">
+                          {day}
+                        </Badge>
+                        <div className="space-y-3">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                              {macros.totalCalories}
+                            </span>
+                            <span className="text-sm text-muted-foreground">cal</span>
+                          </div>
+                          <div className="space-y-1 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Protein:</span>
+                              <span className="font-semibold text-blue-600 dark:text-blue-400">{macros.totalProtein}g</span>
                             </div>
-                            <div className="flex gap-2 text-muted-foreground text-xs">
-                              <span>P: {macros.totalProtein}g</span>
-                              <span>C: {macros.totalCarbs}g</span>
-                              <span>F: {macros.totalFats}g</span>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Carbs:</span>
+                              <span className="font-semibold text-orange-600 dark:text-orange-400">{macros.totalCarbs}g</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Fats:</span>
+                              <span className="font-semibold text-primary">{macros.totalFats}g</span>
                             </div>
                           </div>
                         </div>
-                      </td>
+                      </div>
+                      <Button
+                        onClick={() => downloadGroceryList(dayIdx)}
+                        size="sm"
+                        variant="outline"
+                        className="w-full gap-2"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        Download List
+                      </Button>
+                    </div>
+
+                    {/* Meals Grid */}
+                    <div className="flex-1 grid grid-cols-4 divide-x divide-primary/20">
                       {MEAL_TYPES.map((mealType) => {
                         const meal = getMealForDayAndType(dayIdx, mealType);
                         return (
-                          <td key={`${day}-${mealType}`} className="px-6 py-4">
+                          <div
+                            key={`${day}-${mealType}`}
+                            className="p-4 flex flex-col hover:bg-primary/5 transition-colors cursor-pointer"
+                            onClick={() => {
+                              setSelectedMeal(`${dayIdx}-${mealType}`);
+                              setShowGroceryList(false);
+                            }}
+                          >
+                            <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-3">
+                              {mealType}
+                            </p>
+                            
                             {meal ? (
-                              <button
-                                onClick={() => {
-                                  setSelectedMeal(`${dayIdx}-${mealType}`);
-                                  setShowGroceryList(false);
-                                }}
-                                className="text-left hover-elevate group transition-all w-full"
-                              >
-                                <div className="space-y-2">
-                                  <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              <div className="space-y-3">
+                                <div>
+                                  <p className="font-semibold text-foreground text-sm leading-tight">
                                     {meal.name}
                                   </p>
-                                  <div className="grid grid-cols-3 gap-2 text-xs">
-                                    <div className="bg-blue-50 dark:bg-blue-950/30 rounded p-2 text-center">
-                                      <p className="text-muted-foreground">Protein</p>
-                                      <p className="font-bold text-blue-600 dark:text-blue-400">{meal.protein || 0}g</p>
-                                    </div>
-                                    <div className="bg-orange-50 dark:bg-orange-950/30 rounded p-2 text-center">
-                                      <p className="text-muted-foreground">Carbs</p>
-                                      <p className="font-bold text-orange-600 dark:text-orange-400">{meal.carbs || 0}g</p>
-                                    </div>
-                                    <div className="bg-primary/10 rounded p-2 text-center">
-                                      <p className="text-muted-foreground">Fats</p>
-                                      <p className="font-bold text-primary">{meal.fats || 0}g</p>
-                                    </div>
-                                  </div>
-                                  {meal.calories && (
-                                    <div className="flex items-center gap-1 text-xs font-semibold text-orange-600 dark:text-orange-400">
-                                      <Flame className="h-3 w-3" />
-                                      {meal.calories} cal
-                                    </div>
-                                  )}
                                 </div>
-                              </button>
+
+                                {/* Macro Boxes */}
+                                <div className="space-y-2">
+                                  <div className="bg-blue-50 dark:bg-blue-950/30 rounded px-2 py-1.5 text-center">
+                                    <p className="text-xs text-muted-foreground">Protein</p>
+                                    <p className="font-bold text-blue-600 dark:text-blue-400 text-sm">{meal.protein || 0}g</p>
+                                  </div>
+                                  <div className="bg-orange-50 dark:bg-orange-950/30 rounded px-2 py-1.5 text-center">
+                                    <p className="text-xs text-muted-foreground">Carbs</p>
+                                    <p className="font-bold text-orange-600 dark:text-orange-400 text-sm">{meal.carbs || 0}g</p>
+                                  </div>
+                                  <div className="bg-primary/10 rounded px-2 py-1.5 text-center">
+                                    <p className="text-xs text-muted-foreground">Fats</p>
+                                    <p className="font-bold text-primary text-sm">{meal.fats || 0}g</p>
+                                  </div>
+                                </div>
+
+                                {/* Calories */}
+                                {meal.calories && (
+                                  <div className="flex items-center justify-center gap-1 text-xs font-semibold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/20 rounded py-1">
+                                    <Flame className="h-3 w-3" />
+                                    {meal.calories} cal
+                                  </div>
+                                )}
+                              </div>
                             ) : (
-                              <p className="text-muted-foreground text-sm">-</p>
+                              <p className="text-muted-foreground text-xs">-</p>
                             )}
-                          </td>
+                          </div>
                         );
                       })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
         {/* Meal Details Modal */}
         <Dialog
@@ -318,7 +332,6 @@ Total Items: ${items.length}
             {selectedMeal && (() => {
               const [dayIdx, mealType] = selectedMeal.split("-");
               const meal = getMealForDayAndType(parseInt(dayIdx), mealType);
-              const groceryItems = generateGroceryList(parseInt(dayIdx));
 
               if (!meal) return null;
 
@@ -358,7 +371,7 @@ Total Items: ${items.length}
                     size="lg"
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    View Grocery List ({groceryItems.length} items)
+                    View Grocery List
                   </Button>
                 </div>
               );

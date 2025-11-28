@@ -21,6 +21,7 @@ export function CreateDietPlanModal({ open, onOpenChange, plan }: CreateDietPlan
   const { toast } = useToast();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
   const [category, setCategory] = useState("Balanced");
   const [weekNumber, setWeekNumber] = useState("1");
   const [targetCalories, setTargetCalories] = useState("");
@@ -34,6 +35,7 @@ export function CreateDietPlanModal({ open, onOpenChange, plan }: CreateDietPlan
     if (plan) {
       setName(plan.name || "");
       setDescription(plan.description || "");
+      setDate(plan.date || "");
       setCategory(plan.category || "Balanced");
       setWeekNumber("1");
       setTargetCalories(String(plan.targetCalories || ""));
@@ -50,6 +52,7 @@ export function CreateDietPlanModal({ open, onOpenChange, plan }: CreateDietPlan
   const resetForm = () => {
     setName("");
     setDescription("");
+    setDate("");
     setCategory("Balanced");
     setWeekNumber("1");
     setTargetCalories("");
@@ -170,6 +173,7 @@ export function CreateDietPlanModal({ open, onOpenChange, plan }: CreateDietPlan
     const data = {
       name,
       description,
+      date: date || undefined,
       category,
       targetCalories: parseFloat(targetCalories),
       protein: protein ? parseFloat(protein) : undefined,
@@ -228,6 +232,20 @@ export function CreateDietPlanModal({ open, onOpenChange, plan }: CreateDietPlan
                 data-testid="input-plan-description"
                 rows={3}
               />
+            </div>
+
+            <div>
+              <Label htmlFor="date">Valid From Date (Optional)</Label>
+              <Input
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                data-testid="input-plan-date"
+              />
+              <p className="text-sm text-muted-foreground mt-1">
+                When assigning this diet to a client, it will show the date when this plan is valid
+              </p>
             </div>
 
             <div>

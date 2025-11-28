@@ -34,10 +34,16 @@ export function AssignDietPlanDialog({ open, onOpenChange, dietPlan }: AssignDie
     queryKey: ['/api/packages'],
   });
 
-  // Fetch the full diet plan template to get its meals
+  // Fetch the full diet plan template to get its meals using the correct template endpoint
   const planId = dietPlan?._id || dietPlan?.id;
   const { data: fullDietPlan } = useQuery<any>({
-    queryKey: ['/api/diet-plans', planId],
+    queryKey: ['/api/diet-plans/plan', planId],
+    queryFn: async () => {
+      if (!planId) return null;
+      const res = await fetch(`/api/diet-plans/plan/${planId}`);
+      if (!res.ok) throw new Error("Failed to fetch diet plan");
+      return res.json();
+    },
     enabled: !!planId && open,
   });
 

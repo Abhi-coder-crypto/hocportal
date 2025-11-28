@@ -84,6 +84,7 @@ function Router() {
       <Route path="/trainer/sessions" component={TrainerSessions} />
       <Route path="/trainer/analytics" component={TrainerAnalytics} />
       <Route path="/client" component={ClientDashboard} />
+      <Route path="/client-dashboard" component={ClientDashboard} />
       <Route path="/client/workouts" component={ClientWorkouts} />
       <Route path="/client/videos" component={ClientVideoLibrary} />
       <Route path="/client/video-library" component={ClientVideoLibrary} />

@@ -633,6 +633,8 @@ export default function AdminAnalytics() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

@@ -807,6 +807,8 @@ export default function AdminTrainersEnhanced() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

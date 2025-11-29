@@ -119,6 +119,8 @@ export default function TrainerDiet() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

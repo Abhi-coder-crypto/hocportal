@@ -490,6 +490,8 @@ export default function AdminRevenueEnhanced() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

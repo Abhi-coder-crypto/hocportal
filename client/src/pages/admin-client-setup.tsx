@@ -269,6 +269,8 @@ export default function AdminClientSetup() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

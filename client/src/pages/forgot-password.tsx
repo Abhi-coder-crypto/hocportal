@@ -171,5 +171,8 @@ export default function ForgotPassword() {
         </CardContent>
       </Card>
     </div>
+
+      <MobileNavigation />
+    </div>
   );
 }

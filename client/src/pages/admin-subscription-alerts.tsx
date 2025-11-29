@@ -132,6 +132,8 @@ export default function AdminSubscriptionAlerts() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

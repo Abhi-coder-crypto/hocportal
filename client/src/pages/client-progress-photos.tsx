@@ -341,6 +341,8 @@ export default function ClientProgressPhotos() {
         </div>
       </main>
     </div>
+
+      <MobileNavigation />
+    </div>
   );
 }
-

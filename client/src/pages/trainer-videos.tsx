@@ -248,6 +248,8 @@ export default function TrainerVideos() {
         videoId={assignVideoId}
         videoTitle={assignVideoTitle}
       />
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

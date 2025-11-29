@@ -70,6 +70,8 @@ export default function AdminDiet() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

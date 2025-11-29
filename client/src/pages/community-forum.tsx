@@ -161,6 +161,8 @@ export default function CommunityForum() {
           </CardContent>
         </Card>
       </div>
+
+      <MobileNavigation />
     </div>
   );
 }

@@ -366,6 +366,8 @@ export default function TrainerSessions() {
           </Form>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

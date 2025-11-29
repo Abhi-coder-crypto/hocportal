@@ -387,6 +387,8 @@ export default function SupportTicketsPage() {
           ))}
         </div>
       </div>
+
+      <MobileNavigation />
     </div>
   );
 }

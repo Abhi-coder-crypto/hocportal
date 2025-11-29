@@ -288,6 +288,8 @@ export default function AdminTrainers() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

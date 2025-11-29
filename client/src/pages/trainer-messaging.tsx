@@ -135,6 +135,8 @@ export default function TrainerMessaging() {
           </CardContent>
         </Card>
       </div>
+
+      <MobileNavigation />
     </div>
   );
 }

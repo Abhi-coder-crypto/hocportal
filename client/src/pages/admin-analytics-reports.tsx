@@ -647,6 +647,8 @@ export default function AdminAnalyticsReports() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

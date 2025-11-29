@@ -420,6 +420,8 @@ export default function TrainerHabits() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <MobileNavigation />
     </div>
   );
 }

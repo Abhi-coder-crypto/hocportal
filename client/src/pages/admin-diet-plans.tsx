@@ -750,6 +750,8 @@ export default function AdminDietPlans() {
         onOpenChange={setAssignDialogOpen}
         plan={selectedPlan}
       />
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

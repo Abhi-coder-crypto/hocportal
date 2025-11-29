@@ -246,6 +246,8 @@ export default function AdminPackageManagement() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

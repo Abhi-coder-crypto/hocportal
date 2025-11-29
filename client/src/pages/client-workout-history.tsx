@@ -308,6 +308,8 @@ export default function ClientWorkoutHistory() {
           </Card>
         </div>
       </main>
+
+      <MobileNavigation />
     </div>
   );
 }

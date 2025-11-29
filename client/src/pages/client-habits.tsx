@@ -216,6 +216,8 @@ export default function ClientHabits() {
           </div>
         )}
       </div>
+
+      <MobileNavigation />
     </div>
   );
 }

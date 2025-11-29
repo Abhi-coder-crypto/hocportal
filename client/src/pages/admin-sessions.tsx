@@ -663,6 +663,8 @@ export default function AdminSessions() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

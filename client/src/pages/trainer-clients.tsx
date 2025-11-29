@@ -403,6 +403,8 @@ export default function TrainerClients() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

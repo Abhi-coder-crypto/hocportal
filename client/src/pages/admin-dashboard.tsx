@@ -282,6 +282,8 @@ export default function AdminDashboard() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+
+      <MobileNavigation />
+    </div>
   );
 }

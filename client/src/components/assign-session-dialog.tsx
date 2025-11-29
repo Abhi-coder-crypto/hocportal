@@ -37,7 +37,7 @@ export function AssignSessionDialog({ open, onOpenChange, sessionId, sessionTitl
 
   // Fetch appropriate clients based on user role
   const { data: allClients = [], isLoading: isLoadingAllClients } = useQuery<any[]>({
-    queryKey: isAdmin ? ['/api/admin/clients'] : ['/api/trainers', trainerId, 'clients'],
+    queryKey: isAdmin ? ['/api/clients'] : ['/api/trainers', trainerId, 'clients'],
     enabled: isAdmin || !!trainerId,
   });
 

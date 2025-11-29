@@ -31,7 +31,7 @@ export function AssignPlanDialog({ open, onOpenChange, plan, resourceType = 'die
 
   // Fetch appropriate clients based on user role
   const { data: clients = [], isLoading } = useQuery<any[]>({
-    queryKey: isAdmin ? ['/api/admin/clients'] : ['/api/trainers', trainerId, 'clients'],
+    queryKey: isAdmin ? ['/api/clients'] : ['/api/trainers', trainerId, 'clients'],
     enabled: isAdmin || !!trainerId,
   });
 

@@ -84,6 +84,7 @@ export default function ClientWorkoutPlans() {
           ? `DELETE /api/clients/${clientId}/workout-bookmarks/${planId}`
           : `POST /api/clients/${clientId}/workout-bookmarks`,
         !isBookmarked ? { workoutPlanId: planId } : undefined
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/clients/${clientId}/workout-bookmarks`] });
@@ -122,6 +123,7 @@ export default function ClientWorkoutPlans() {
       return apiRequest(
         notes ? `POST /api/clients/${clientId}/workout-notes` : `DELETE /api/clients/${clientId}/workout-notes/${planId}`,
         notes ? { workoutPlanId: planId, notes } : undefined
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/clients/${clientId}/workout-notes`] });
@@ -144,6 +146,7 @@ export default function ClientWorkoutPlans() {
           <p className="text-destructive">Unable to load workout plans</p>
         </div>
       </div>
+    );
   }
 
   const getDifficultyColor = (difficulty?: string) => {

@@ -301,21 +301,17 @@ export default function ClientVideoLibrary() {
                   </CardContent>
         </Card>
                 </Card>
-      </main>
               );
               })}
             </div>
           )}
         </div>
-      </main>
 
       {/* Video Player Modal with Resume Feature */}
       <VideoPlayerModal
         isOpen={!!playingVideo}
         onClose={() => setPlayingVideo(null)}
         videoUrl={playingVideo?.url || ""}
-        videoTitle={playingVideo?.title || ""}
-        videoId={playingVideo?.id || ""}
       </main>
     </div>
   );

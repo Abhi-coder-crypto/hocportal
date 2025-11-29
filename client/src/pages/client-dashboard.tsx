@@ -181,7 +181,6 @@ export default function ClientDashboard() {
               ))}
             </div>
           </div>
-        </main>
       </div>
     );
   }
@@ -269,7 +268,6 @@ export default function ClientDashboard() {
                 <span className="text-sm font-medium text-white">Sessions</span>
               </div>
             </Card>
-      </main>
 
             {/* Sessions Completed - Yellow/Gold */}
             <Card className="hover-elevate relative overflow-hidden bg-gradient-to-br from-yellow-400 to-yellow-500 border-0 rounded-2xl p-6 min-h-56 flex flex-col justify-between">
@@ -290,7 +288,6 @@ export default function ClientDashboard() {
                 <span className="text-sm font-medium text-white">Completed</span>
               </div>
             </Card>
-      </main>
 
             {/* Calories Burned - Green */}
             <Card className="hover-elevate relative overflow-hidden bg-gradient-to-br from-emerald-400 to-emerald-500 border-0 rounded-2xl p-6 min-h-56 flex flex-col justify-between">
@@ -305,7 +302,6 @@ export default function ClientDashboard() {
                 <span className="text-sm font-medium text-white">Kcal</span>
               </div>
             </Card>
-      </main>
 
             {/* Next Session - Orange */}
             <Card className="hover-elevate relative overflow-hidden bg-gradient-to-br from-orange-400 to-orange-500 border-0 rounded-2xl p-6 min-h-56 flex flex-col justify-between">
@@ -320,7 +316,6 @@ export default function ClientDashboard() {
                 <span className="text-sm font-medium text-white">Timing</span>
               </div>
             </Card>
-      </main>
           </div>
 
           {/* Two Column Layout: Videos + Progress */}
@@ -401,10 +396,7 @@ export default function ClientDashboard() {
                 </CardContent>
         </Card>
               </Card>
-      </main>
             )}
-          </div>
-        </div>
       </main>
     </div>
   );

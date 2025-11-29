@@ -16,7 +16,7 @@ export function MobileNavigation() {
     {
       icon: <HomeIcon className="h-16 w-16" />,
       label: "Home",
-      path: "/client/dashboard",
+      path: "/client",
       testId: "nav-home",
     },
     {

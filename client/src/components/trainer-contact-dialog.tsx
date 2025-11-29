@@ -164,9 +164,6 @@ export function TrainerContactDropdown({ isProOrElite, packageName }: TrainerCon
                   {isBasicPlan ? "Trainer contact is available for Pro and Elite packages. Upgrade now to get direct access to your trainer." : "Trainer contact is available for Pro and Elite packages only."}
                 </p>
               </div>
-              <Button variant="default" className="w-full" onClick={() => setOpen(false)}>
-                View Plans
-              </Button>
             </div>
           )}
 

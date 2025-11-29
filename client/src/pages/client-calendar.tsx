@@ -443,5 +443,8 @@ export default function ClientCalendar() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <MobileNavigation />
+    </div>
   );
 }

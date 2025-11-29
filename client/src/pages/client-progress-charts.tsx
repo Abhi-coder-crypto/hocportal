@@ -246,5 +246,8 @@ export default function ClientProgressCharts() {
           </div>
         </div>
       </main>
+
+      <MobileNavigation />
+    </div>
   );
 }

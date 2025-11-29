@@ -223,9 +223,9 @@ export default function ClientVideos() {
       <main className="flex-1 py-8">
         <div className="container mx-auto px-6 space-y-8">
           <div>
-            <h1 className="text-3xl font-display font-bold tracking-tight">Video Library</h1>
+            <h1 className="text-3xl font-display font-bold tracking-tight">Your Assigned Workouts</h1>
             <p className="text-muted-foreground mt-1">
-              Access all your workout videos anytime
+              Your personalized workout videos assigned by your trainer
             </p>
           </div>
 
@@ -339,7 +339,7 @@ export default function ClientVideos() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {isLoading ? (
                   <div className="col-span-full text-center py-12 text-muted-foreground">
-                    Loading workout videos...
+                    Loading your assigned workout videos...
                   </div>
                 ) : filteredVideos.length > 0 ? (
                   filteredVideos.map((video) => (
@@ -347,7 +347,7 @@ export default function ClientVideos() {
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12 text-muted-foreground">
-                    No videos found matching your filters
+                    No assigned videos yet. Contact your trainer to get started.
                   </div>
                 )}
               </div>

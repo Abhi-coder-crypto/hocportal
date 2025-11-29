@@ -67,31 +67,29 @@ export default function TrainerClients() {
   });
 
   // Filter clients
-  const filteredClients = clients.filter((client: Client) => {
+  const filteredClients = clients.filter((client: any) => {
     const matchesSearch = 
       client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       client.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       client.phone?.includes(searchQuery);
     
-    const matchesStatus = statusFilter === 'all' || client.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
+    return matchesSearch;
   });
 
   // Calculate statistics
   const totalClients = clients.length;
-  const activeCount = clients.filter((c: Client) => c.status === 'active').length;
-  const inactiveCount = clients.filter((c: Client) => c.status === 'inactive').length;
-  const enquiredCount = clients.filter((c: Client) => c.status === 'enquired').length;
+  const activeCount = totalClients;
+  const inactiveCount = 0;
+  const enquiredCount = 0;
 
   const handleExport = () => {
     try {
       const headers = ["Name", "Phone", "Email", "Status", "Join Date"];
-      const rows = filteredClients.map((client: Client) => [
+      const rows = filteredClients.map((client: any) => [
         client.name,
         client.phone || "-",
         client.email || "-",
-        client.status || "active",
+        "active",
         new Date(client.createdAt).toLocaleDateString(),
       ]);
 
@@ -120,7 +118,7 @@ export default function TrainerClients() {
     }
   };
 
-  const handleMessage = (client: Client) => {
+  const handleMessage = (client: any) => {
     if (client.phone) {
       const phoneNumber = client.phone.replace(/\D/g, "");
       const message = `Hello ${client.name}, this is your trainer from FitPro. How can I help you today?`;
@@ -298,8 +296,8 @@ export default function TrainerClients() {
                             </TableCell>
                           </TableRow>
                         ) : (
-                          filteredClients.map((client: Client) => (
-                            <TableRow key={client._id} data-testid={`row-client-${client._id}`}>
+                          filteredClients.map((client: any) => (
+                            <TableRow key={client.id} data-testid={`row-client-${client.id}`}>
                               <TableCell className="font-semibold" data-testid="text-client-name">
                                 {client.name}
                               </TableCell>
@@ -310,7 +308,7 @@ export default function TrainerClients() {
                                 {client.email || "-"}
                               </TableCell>
                               <TableCell>
-                                {getStatusBadge(client.status || 'active')}
+                                <Badge variant="default">Active</Badge>
                               </TableCell>
                               <TableCell data-testid="text-join-date">
                                 {new Date(client.createdAt).toLocaleDateString()}
@@ -321,7 +319,7 @@ export default function TrainerClients() {
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => handleMessage(client)}
-                                    data-testid={`button-message-${client._id}`}
+                                    data-testid={`button-message-${client.id}`}
                                     title="Send WhatsApp message"
                                   >
                                     <MessageSquare className="h-4 w-4" />
@@ -346,8 +344,8 @@ export default function TrainerClients() {
                       No clients found
                     </div>
                   ) : (
-                    filteredClients.map((client: Client) => (
-                      <Card key={client._id} className="overflow-hidden hover-elevate" data-testid={`card-client-${client._id}`}>
+                    filteredClients.map((client: any) => (
+                      <Card key={client.id} className="overflow-hidden hover-elevate" data-testid={`card-client-${client.id}`}>
                         <CardContent className="p-6 space-y-4">
                           <div className="flex flex-col items-center gap-4">
                             <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
@@ -371,8 +369,8 @@ export default function TrainerClients() {
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Status:</span>
-                              <span className="font-medium" data-testid={`status-${client._id}`}>
-                                {client.status || 'active'}
+                              <span className="font-medium" data-testid={`status-${client.id}`}>
+                                Active
                               </span>
                             </div>
                             <div className="flex justify-between">
@@ -381,12 +379,6 @@ export default function TrainerClients() {
                                 {new Date(client.createdAt).toLocaleDateString()}
                               </span>
                             </div>
-                            {client.goal && (
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Goal:</span>
-                                <span className="font-medium capitalize">{client.goal}</span>
-                              </div>
-                            )}
                           </div>
 
                           <div className="flex gap-2 pt-4 border-t">

@@ -138,6 +138,7 @@ export default function TrainerVideos() {
                   <CardContent>
                     <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
                       {videos.filter((v: VideoType) => {
+                        if (!v.createdAt) return false;
                         const created = new Date(v.createdAt);
                         const now = new Date();
                         return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
@@ -159,9 +160,9 @@ export default function TrainerVideos() {
                   ) : (
                     <div className="grid gap-4 md:grid-cols-3">
                       {filteredVideos.map((video: VideoType) => (
-                        <Card key={video._id || video.id} className="hover-elevate overflow-hidden">
+                        <Card key={video._id || video.id} className="hover-elevate overflow-hidden" data-testid={`card-video-${video._id || video.id}`}>
                           <CardContent className="p-0">
-                            <div className="relative aspect-video bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center rounded-t-md group">
+                            <div className="relative aspect-video bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center rounded-t-md group overflow-hidden">
                               {video.url ? (
                                 <>
                                   <VideoIcon className="h-12 w-12 text-muted-foreground" />
@@ -169,7 +170,7 @@ export default function TrainerVideos() {
                                     <Button 
                                       size="icon" 
                                       className="h-12 w-12 rounded-full"
-                                      onClick={() => setPlayingVideo({ url: `/api/videos/${video._id || video.id}/stream`, title: video.title })}
+                                      onClick={() => setPlayingVideo({ url: `/api/videos/${video._id || video.id}/stream`, title: video.title, id: video._id || video.id })}
                                       data-testid={`button-play-${video._id || video.id}`}
                                     >
                                       <Play className="h-6 w-6" />
@@ -190,7 +191,9 @@ export default function TrainerVideos() {
                               
                               <div className="flex items-center gap-2 flex-wrap">
                                 <Badge variant="secondary">{video.category}</Badge>
-                                <Badge variant="outline">{video.category || 'Intermediate'}</Badge>
+                                {video.difficulty && (
+                                  <Badge variant="outline">{video.difficulty}</Badge>
+                                )}
                               </div>
 
                               <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -200,13 +203,25 @@ export default function TrainerVideos() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Eye className="h-3 w-3" />
-                                  <span>{Math.floor(Math.random() * 100)} views</span>
+                                  <span>{video.views || 0} views</span>
                                 </div>
                               </div>
 
-                              <Button size="sm" className="w-full" variant="outline" data-testid={`button-edit-${video._id || video.id}`}>
-                                Edit Video
-                              </Button>
+                              <div className="flex gap-2 flex-wrap pt-2 border-t">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex-1"
+                                  onClick={() => {
+                                    setAssignVideoId(video._id || video.id);
+                                    setAssignVideoTitle(video.title);
+                                    setShowAssignDialog(true);
+                                  }}
+                                  data-testid={`button-assign-${video._id || video.id}`}
+                                >
+                                  Assign
+                                </Button>
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -224,6 +239,14 @@ export default function TrainerVideos() {
       <UploadVideoModal
         open={showUploadModal}
         onOpenChange={setShowUploadModal}
+      />
+
+      {/* Assign Video Dialog */}
+      <AssignVideoDialog
+        open={showAssignDialog}
+        onOpenChange={setShowAssignDialog}
+        videoId={assignVideoId}
+        videoTitle={assignVideoTitle}
       />
     </SidebarProvider>
   );

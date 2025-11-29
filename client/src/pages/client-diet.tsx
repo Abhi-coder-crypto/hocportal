@@ -77,14 +77,25 @@ export default function ClientDiet() {
   const getMealForDayAndType = (dayIndex: number, mealType: string): Meal | undefined => {
     if (!currentPlan?.meals) return undefined;
     
-    const mealsArray = Object.entries(currentPlan.meals).filter(([key]) => 
+    // Handle flat 5-meal structure (breakfast, lunch, pre-workout, post-workout, dinner)
+    const meals = currentPlan.meals;
+    const mealKey = mealType.toLowerCase();
+    
+    // Check if it's a direct meal (flat structure)
+    if (meals[mealKey]) {
+      return meals[mealKey];
+    }
+    
+    // Handle day-based structure fallback
+    const mealTypeKey = Object.keys(meals).find(key => 
       key.toLowerCase().startsWith(mealType.toLowerCase())
     );
     
-    if (mealsArray.length === 0) return undefined;
+    if (mealTypeKey) {
+      return meals[mealTypeKey];
+    }
     
-    const mealIndex = dayIndex % mealsArray.length;
-    return mealsArray[mealIndex]?.[1];
+    return undefined;
   };
 
   const getTotalMacrosForDay = (dayIndex: number) => {
@@ -93,6 +104,7 @@ export default function ClientDiet() {
     let totalCarbs = 0;
     let totalFats = 0;
 
+    // For flat 5-meal structure, all meals are the same for every day
     MEAL_TYPES.forEach((mealType) => {
       const meal = getMealForDayAndType(dayIndex, mealType);
       if (meal) {
@@ -112,7 +124,7 @@ export default function ClientDiet() {
     MEAL_TYPES.forEach((mealType) => {
       const meal = getMealForDayAndType(dayIndex, mealType);
       if (meal?.dishes) {
-        meal.dishes.forEach((dish) => {
+        meal.dishes.forEach((dish: any) => {
           const text = dish.quantity ? `${dish.name} - ${dish.quantity}` : dish.name;
           items.add(text);
         });

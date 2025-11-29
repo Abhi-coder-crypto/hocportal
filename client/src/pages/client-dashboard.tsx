@@ -168,6 +168,27 @@ export default function ClientDashboard() {
     refetchOnWindowFocus: true,
   });
 
+  const { data: assignedVideos = [] } = useQuery<any[]>({
+    queryKey: [`/api/clients/${clientId}/videos`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 30000,
+  });
+
+  const { data: workoutPlans = [] } = useQuery<any[]>({
+    queryKey: [`/api/clients/${clientId}/workout-plans`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 30000,
+  });
+
+  const { data: achievementsData = [] } = useQuery<any[]>({
+    queryKey: [`/api/achievements/${clientId}`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 30000,
+  });
+
   if (isLoading || !dashboardData) {
     return (
       <div className="w-full bg-background">
@@ -186,11 +207,11 @@ export default function ClientDashboard() {
     );
   }
 
-  const { client, stats, progress, nextSession, upcomingSessions: dashboardUpcomingSessions, videos: apiVideos } =
-    dashboardData || { client: { name: '', packageName: '', goal: '' }, stats: { totalSessions: 0, weekSessions: 0, weekCalories: 0, currentStreak: 0, maxStreak: 0, monthSessions: 0, totalCalories: 0, waterIntakeToday: 0 }, progress: { initialWeight: 0, currentWeight: 0, targetWeight: 0, weightProgress: 0, weeklyWorkoutCompletion: 0 }, nextSession: null, upcomingSessions: [], videos: [] };
+  const { client, stats, progress, nextSession, upcomingSessions: dashboardUpcomingSessions, calendarData = [] } =
+    dashboardData || { client: { name: '', packageName: '', goal: '' }, stats: { totalSessions: 0, weekSessions: 0, weekCalories: 0, currentStreak: 0, maxStreak: 0, monthSessions: 0, totalCalories: 0, waterIntakeToday: 0 }, progress: { initialWeight: 0, currentWeight: 0, targetWeight: 0, weightProgress: 0, weeklyWorkoutCompletion: 0 }, nextSession: null, upcomingSessions: [], calendarData: [] };
   
-  // Use dummy videos if no API videos available
-  const videos = apiVideos && apiVideos.length > 0 ? apiVideos : DUMMY_VIDEOS;
+  // Use assigned videos if available, otherwise fallback to dummy
+  const videos = assignedVideos && assignedVideos.length > 0 ? assignedVideos : DUMMY_VIDEOS;
 
   // Format sessions from the sessions endpoint
   const formattedSessions = ((sessionsData || []) as any[])
@@ -221,16 +242,32 @@ export default function ClientDashboard() {
     ? format(new Date(nextSession.scheduledAt), "MMM d, yyyy")
     : "scheduled";
 
-  // Mock weekly workout data
+  // Weekly workout data from calendar
   const weeklyWorkouts = {
-    mon: stats.weekSessions >= 1,
-    tue: stats.weekSessions >= 2,
-    wed: stats.weekSessions >= 3,
-    thu: stats.weekSessions >= 4,
-    fri: stats.weekSessions >= 5,
-    sat: false,
-    sun: false,
+    mon: (calendarData[1]?.hasWorkout) || false,
+    tue: (calendarData[2]?.hasWorkout) || false,
+    wed: (calendarData[3]?.hasWorkout) || false,
+    thu: (calendarData[4]?.hasWorkout) || false,
+    fri: (calendarData[5]?.hasWorkout) || false,
+    sat: (calendarData[6]?.hasWorkout) || false,
+    sun: (calendarData[0]?.hasWorkout) || false,
   };
+
+  // Count completed workouts from workout plans
+  let completedWorkouts = 0;
+  let assignedWorkoutCount = 0;
+  workoutPlans.forEach((plan: any) => {
+    if (plan.weeks && Array.isArray(plan.weeks)) {
+      plan.weeks.forEach((week: any) => {
+        if (week.workouts && Array.isArray(week.workouts)) {
+          week.workouts.forEach((workout: any) => {
+            assignedWorkoutCount++;
+            if (workout.completed) completedWorkouts++;
+          });
+        }
+      });
+    }
+  });
 
   return (
     <div className="w-full bg-background min-h-screen mb-20 md:mb-0">
@@ -340,12 +377,12 @@ export default function ClientDashboard() {
               />
 
               <AchievementGrid
-                achievements={[]}
+                achievements={achievementsData || []}
                 unlockedCount={Math.min(
-                  6,
-                  Math.floor(stats.totalSessions / 10) + (stats.currentStreak >= 7 ? 1 : 0)
+                  achievementsData?.length || 0,
+                  Math.floor(stats.totalSessions / 10) + (stats.currentStreak >= 7 ? 1 : 0) + (assignedWorkoutCount > 0 ? Math.floor((completedWorkouts / assignedWorkoutCount) * 3) : 0)
                 )}
-                totalCount={6}
+                totalCount={Math.max(6, (achievementsData?.length || 0) + 2)}
               />
             </div>
           </div>

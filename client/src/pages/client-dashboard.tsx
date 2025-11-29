@@ -176,10 +176,24 @@ export default function ClientDashboard() {
   });
 
   const { data: workoutPlans = [] } = useQuery<any[]>({
-    queryKey: [`/api/clients/${clientId}/workout-plans`],
+    queryKey: [`/api/workout-plans`],
     enabled: !!clientId,
     staleTime: 0,
     refetchInterval: 30000,
+  });
+
+  const { data: weightData } = useQuery<any>({
+    queryKey: [`/api/progress/weight`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 30000,
+  });
+
+  const { data: upcomingSessions = [] } = useQuery<any[]>({
+    queryKey: [`/api/clients/${clientId}/upcoming-sessions`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 10000,
   });
 
   const { data: achievementsData = [] } = useQuery<any[]>({
@@ -210,11 +224,33 @@ export default function ClientDashboard() {
   const { client, stats, progress, nextSession, upcomingSessions: dashboardUpcomingSessions, calendarData = [] } =
     dashboardData || { client: { name: '', packageName: '', goal: '' }, stats: { totalSessions: 0, weekSessions: 0, weekCalories: 0, currentStreak: 0, maxStreak: 0, monthSessions: 0, totalCalories: 0, waterIntakeToday: 0 }, progress: { initialWeight: 0, currentWeight: 0, targetWeight: 0, weightProgress: 0, weeklyWorkoutCompletion: 0 }, nextSession: null, upcomingSessions: [], calendarData: [] };
   
-  // Use assigned videos if available, otherwise fallback to dummy
-  const videos = assignedVideos && assignedVideos.length > 0 ? assignedVideos : DUMMY_VIDEOS;
+  // Transform assigned workout plans into video format for library display
+  const workoutVideos = (workoutPlans || []).flatMap((plan: any) => {
+    const videos: any[] = [];
+    if (plan.weeks && Array.isArray(plan.weeks)) {
+      plan.weeks.forEach((week: any, weekIdx: number) => {
+        if (week.workouts && Array.isArray(week.workouts)) {
+          week.workouts.forEach((workout: any) => {
+            videos.push({
+              id: `${plan._id}-week${weekIdx}-${workout.name}`,
+              category: workout.category || "Workout",
+              title: workout.name || `Week ${weekIdx + 1} Workout`,
+              duration: workout.duration || 45,
+              thumbnail: workout.thumbnail || fullBodyImg,
+              completed: workout.completed || false,
+            });
+          });
+        }
+      });
+    }
+    return videos;
+  });
 
-  // Format sessions from the sessions endpoint
-  const formattedSessions = ((sessionsData || []) as any[])
+  // Use assigned workout videos if available, otherwise fallback to assigned videos, then dummy
+  const videos = workoutVideos.length > 0 ? workoutVideos : (assignedVideos && assignedVideos.length > 0 ? assignedVideos : DUMMY_VIDEOS);
+
+  // Format sessions from the sessions endpoint - show assigned upcoming sessions with names
+  const formattedSessions = ((upcomingSessions && upcomingSessions.length > 0 ? upcomingSessions : sessionsData) || [])
     .filter((s: any) => s.status === 'upcoming' || s.status === 'live')
     .sort((a: any, b: any) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
     .slice(0, 2)
@@ -223,7 +259,7 @@ export default function ClientDashboard() {
       const trainerName = session.trainerId?.name || session.trainerName || "Trainer";
       return {
         id: session._id,
-        title: session.title,
+        title: session.title || session.sessionName || "Live Session",
         trainer: trainerName,
         date: sessionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         time: sessionDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
@@ -261,10 +297,19 @@ export default function ClientDashboard() {
     sun: (calendarData[0]?.hasWorkout) || false,
   };
 
-  // Count completed workouts from workout plans
+  // Count completed workouts from workout plans (from assignment date onwards)
   let completedWorkouts = 0;
   let assignedWorkoutCount = 0;
+  let assignmentDate = new Date();
+  
   workoutPlans.forEach((plan: any) => {
+    // Track when workout was assigned to calculate progress from that date
+    if (plan.createdAt) {
+      const planDate = new Date(plan.createdAt);
+      if (planDate < assignmentDate) {
+        assignmentDate = planDate;
+      }
+    }
     if (plan.weeks && Array.isArray(plan.weeks)) {
       plan.weeks.forEach((week: any) => {
         if (week.workouts && Array.isArray(week.workouts)) {
@@ -277,10 +322,28 @@ export default function ClientDashboard() {
     }
   });
 
-  // Calculate workout compliance percentage
+  // Calculate weight goal progress from logged weight
+  const currentWeight = weightData?.current || progress.currentWeight || 0;
+  const targetWeight = weightData?.goal || progress.targetWeight || 0;
+  const initialWeight = weightData?.initial || progress.initialWeight || 0;
+  const weightProgress = targetWeight && initialWeight ? 
+    Math.round(((initialWeight - currentWeight) / (initialWeight - targetWeight)) * 100) : 0;
+
+  // Calculate workout compliance percentage and achievements
   const workoutCompliancePercent = assignedWorkoutCount > 0 
     ? Math.round((completedWorkouts / assignedWorkoutCount) * 100)
     : 0;
+
+  // Calculate achievements based on workout data
+  const achievementMetrics = {
+    firstWorkout: completedWorkouts > 0,
+    sevenDayStreak: stats.currentStreak >= 7,
+    tenWorkouts: completedWorkouts >= 10,
+    thirtyDayStreak: stats.currentStreak >= 30,
+    fiftyWorkouts: completedWorkouts >= 50,
+    hundredWorkouts: completedWorkouts >= 100,
+  };
+  const unlockedAchievements = Object.values(achievementMetrics).filter(Boolean).length;
 
   return (
     <div className="w-full bg-background min-h-screen mb-20 md:mb-0">
@@ -383,8 +446,8 @@ export default function ClientDashboard() {
             <div className="space-y-6">
               <ProgressSidebar
                 weeklyWorkouts={weeklyWorkouts}
-                weightCurrent={Math.round(parseFloat(progress.currentWeight as any))}
-                weightTarget={Math.round(parseFloat(progress.targetWeight as any))}
+                weightCurrent={Math.round(Number(currentWeight) || 0)}
+                weightTarget={Math.round(Number(targetWeight) || 0)}
                 weeklyCompletion={workoutCompliancePercent}
                 onUpdateGoals={() => setLocation("/client/goals")}
               />
@@ -393,9 +456,9 @@ export default function ClientDashboard() {
                 achievements={achievementsData || []}
                 unlockedCount={Math.min(
                   achievementsData?.length || 0,
-                  Math.floor(stats.totalSessions / 10) + (stats.currentStreak >= 7 ? 1 : 0) + (assignedWorkoutCount > 0 ? Math.floor((completedWorkouts / assignedWorkoutCount) * 3) : 0)
+                  unlockedAchievements + (assignedWorkoutCount > 0 ? Math.floor((completedWorkouts / assignedWorkoutCount) * 2) : 0)
                 )}
-                totalCount={Math.max(6, (achievementsData?.length || 0) + 2)}
+                totalCount={Math.max(6, (achievementsData?.length || 0))}
               />
             </div>
           </div>

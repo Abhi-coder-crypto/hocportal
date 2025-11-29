@@ -626,7 +626,6 @@ export default function ClientGoals() {
         </div>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

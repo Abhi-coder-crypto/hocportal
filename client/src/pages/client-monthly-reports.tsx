@@ -156,7 +156,6 @@ export default function ClientMonthlyReports() {
         </div>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

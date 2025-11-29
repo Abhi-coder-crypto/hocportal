@@ -351,7 +351,6 @@ export default function ClientNotifications() {
         </Tabs>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

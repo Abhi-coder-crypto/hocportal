@@ -31,7 +31,6 @@ export default function ClientCalculators() {
           <AdvancedNutritionCalculators />
         </div>
       </main>
-      <MobileNavigation />
     </div>
   );
 }

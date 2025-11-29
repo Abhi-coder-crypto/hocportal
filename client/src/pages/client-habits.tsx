@@ -34,7 +34,6 @@ export default function ClientHabits() {
     return (
       <div className="min-h-screen bg-background">
         <ClientHeader currentPage="dashboard" packageName={packageName} />
-        <MobileNavigation />
         <div className="max-w-6xl mx-auto p-4 md:p-6">
           <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/20">
             <CardContent className="pt-6">
@@ -141,7 +140,6 @@ export default function ClientHabits() {
   return (
     <div className="min-h-screen bg-background">
       <ClientHeader currentPage="dashboard" packageName={packageName} />
-      <MobileNavigation />
 
       <div className="max-w-2xl mx-auto p-4 md:p-6">
         {/* Header */}
@@ -217,7 +215,6 @@ export default function ClientHabits() {
         )}
       </div>
 
-      <MobileNavigation />
     </div>
   );
 }

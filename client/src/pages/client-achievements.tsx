@@ -207,7 +207,6 @@ export default function ClientAchievements() {
         </div>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

@@ -316,7 +316,6 @@ export default function ClientVideoLibrary() {
         />
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

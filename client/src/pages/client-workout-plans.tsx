@@ -406,7 +406,6 @@ export default function ClientWorkoutPlans() {
           </div>
         )}
 
-      <MobileNavigation />
     </div>
   );
 }

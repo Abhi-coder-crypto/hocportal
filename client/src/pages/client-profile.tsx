@@ -486,7 +486,6 @@ export default function ClientProfile() {
           </Tabs>
         </div>
       </main>
-      <MobileNavigation />
     </div>
   );
 }

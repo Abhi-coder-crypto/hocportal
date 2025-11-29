@@ -181,7 +181,6 @@ Total Items: ${items.length}
   return (
     <div className="min-h-screen bg-background">
       <ClientHeader />
-      <MobileNavigation />
 
       <div className="max-w-7xl mx-auto p-4 md:p-6">
         {/* Header */}
@@ -436,7 +435,6 @@ Total Items: ${items.length}
         </Dialog>
       </div>
 
-      <MobileNavigation />
     </div>
   );
 }

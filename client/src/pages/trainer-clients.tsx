@@ -404,7 +404,6 @@ export default function TrainerClients() {
         </div>
       </div>
 
-    </div>
   </SidebarProvider>
   );
 }

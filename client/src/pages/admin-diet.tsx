@@ -70,8 +70,6 @@ export default function AdminDiet() {
           </main>
         </div>
       </div>
-
-    </div>
-  </SidebarProvider>
+    </SidebarProvider>
   );
 }

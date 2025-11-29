@@ -120,7 +120,6 @@ export default function TrainerDiet() {
         </div>
       </div>
 
-    </div>
   </SidebarProvider>
   );
 }

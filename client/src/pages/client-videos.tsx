@@ -401,7 +401,6 @@ export default function ClientVideos() {
         </div>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

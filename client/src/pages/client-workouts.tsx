@@ -495,7 +495,6 @@ export default function ClientWorkouts() {
       </Dialog>
 
       <ContactTrainerDialog open={contactTrainerOpen} onOpenChange={setContactTrainerOpen} />
-      <MobileNavigation />
     </div>
   );
 }

@@ -157,7 +157,6 @@ export default function ClientSessions() {
         </div>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

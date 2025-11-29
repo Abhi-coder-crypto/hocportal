@@ -194,7 +194,6 @@ export default function ClientAccess() {
         </Card>
       </main>
 
-      <MobileNavigation />
     </div>
   );
 }

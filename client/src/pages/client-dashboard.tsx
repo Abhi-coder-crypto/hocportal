@@ -244,8 +244,9 @@ export default function ClientDashboard() {
 
   // Determine package access
   const packageName = packageAccess?.packageName || client.packageName || '';
-  const hasLiveSessionAccess = packageName !== 'Basic';
-  const hasVideoAccess = ['Standard', 'Premium'].includes(packageName);
+  // Live sessions available for: FitPro, Elite, Fit Plus (all non-Basic packages)
+  const hasLiveSessionAccess = ['FitPro', 'Elite', 'Fit Plus', 'Standard', 'Premium'].includes(packageName);
+  const hasVideoAccess = ['Standard', 'Premium', 'FitPro', 'Elite', 'Fit Plus'].includes(packageName);
   
   // Weekly workout data from calendar - match actual workout dates
   const weeklyWorkouts = {

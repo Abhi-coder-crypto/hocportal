@@ -1,0 +1,716 @@
+{
+  "templateName": "7-Day High Protein Balanced Plan",
+  "templateDescription": "High protein balanced weekly meal plan including 5 meals per day (Breakfast, Lunch, Pre-Workout, Post-Workout, Dinner). Designed for muscle gain, fat loss, and sustained energy.",
+  "targetCalories": 2850,
+  "targetProtein": 240,
+  "targetCarbs": 285,
+  "targetFats": 79,
+  "days": [
+    {
+      "dayName": "Monday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Scrambled eggs (3) + spinach + 1 toast",
+          "mealDescription": "Fresh scrambled eggs with spinach and whole wheat toast",
+          "totalCalories": 430,
+          "totalProtein": 32,
+          "totalCarbs": 34,
+          "totalFats": 20,
+          "dishes": [
+            {
+              "dishName": "Scrambled Eggs with Spinach & Toast",
+              "recipe": "Scramble 3 eggs with spinach and serve with 1 slice whole wheat toast.",
+              "calories": 430,
+              "protein": 32,
+              "carbs": 34,
+              "fats": 20
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Grilled chicken breast + quinoa + broccoli",
+          "mealDescription": "Lean grilled chicken served with quinoa and steamed broccoli",
+          "totalCalories": 560,
+          "totalProtein": 55,
+          "totalCarbs": 48,
+          "totalFats": 12,
+          "dishes": [
+            {
+              "dishName": "Chicken + Quinoa + Broccoli Plate",
+              "recipe": "Grill chicken breast, cook quinoa, and steam broccoli.",
+              "calories": 560,
+              "protein": 55,
+              "carbs": 48,
+              "fats": 12
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Banana",
+          "mealDescription": "Simple quick-digesting carb source",
+          "totalCalories": 105,
+          "totalProtein": 1,
+          "totalCarbs": 27,
+          "totalFats": 0,
+          "dishes": [
+            {
+              "dishName": "Medium Banana",
+              "recipe": "Eat 1 medium banana.",
+              "calories": 105,
+              "protein": 1,
+              "carbs": 27,
+              "fats": 0
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Whey protein shake + 10 almonds",
+          "mealDescription": "Fast protein with healthy fats",
+          "totalCalories": 210,
+          "totalProtein": 27,
+          "totalCarbs": 6,
+          "totalFats": 9,
+          "dishes": [
+            {
+              "dishName": "Whey Shake + Almonds",
+              "recipe": "Mix whey protein with water. Add almonds.",
+              "calories": 210,
+              "protein": 27,
+              "carbs": 6,
+              "fats": 9
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Baked salmon + salad + roasted veggies",
+          "mealDescription": "Nutritious omega-3 rich dinner",
+          "totalCalories": 550,
+          "totalProtein": 38,
+          "totalCarbs": 20,
+          "totalFats": 32,
+          "dishes": [
+            {
+              "dishName": "Baked Salmon + Veggies",
+              "recipe": "Bake salmon with spices, serve with salad and roasted vegetables.",
+              "calories": 550,
+              "protein": 38,
+              "carbs": 20,
+              "fats": 32
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Tuesday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Greek yogurt + berries + chia",
+          "mealDescription": "High-protein yogurt bowl",
+          "totalCalories": 320,
+          "totalProtein": 22,
+          "totalCarbs": 38,
+          "totalFats": 8,
+          "dishes": [
+            {
+              "dishName": "Yogurt Bowl",
+              "recipe": "Mix Greek yogurt with berries and chia seeds.",
+              "calories": 320,
+              "protein": 22,
+              "carbs": 38,
+              "fats": 8
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Turkey wrap",
+          "mealDescription": "Lean turkey with veggies in whole grain wrap",
+          "totalCalories": 460,
+          "totalProtein": 40,
+          "totalCarbs": 42,
+          "totalFats": 12,
+          "dishes": [
+            {
+              "dishName": "Turkey Wrap",
+              "recipe": "Assemble turkey, greens, tomato, and hummus in wrap.",
+              "calories": 460,
+              "protein": 40,
+              "carbs": 42,
+              "fats": 12
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Apple + small walnuts",
+          "mealDescription": "Fruit and healthy fats",
+          "totalCalories": 230,
+          "totalProtein": 3,
+          "totalCarbs": 28,
+          "totalFats": 14,
+          "dishes": [
+            {
+              "dishName": "Apple + Walnuts",
+              "recipe": "Eat 1 apple with small handful of walnuts.",
+              "calories": 230,
+              "protein": 3,
+              "carbs": 28,
+              "fats": 14
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + 1 boiled egg",
+          "mealDescription": "Protein boost after training",
+          "totalCalories": 210,
+          "totalProtein": 30,
+          "totalCarbs": 4,
+          "totalFats": 5,
+          "dishes": [
+            {
+              "dishName": "Shake + Egg",
+              "recipe": "Drink whey shake, eat 1 boiled egg.",
+              "calories": 210,
+              "protein": 30,
+              "carbs": 4,
+              "fats": 5
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Chicken/tofu stir fry + rice",
+          "mealDescription": "Lean dinner with carbs for recovery",
+          "totalCalories": 480,
+          "totalProtein": 32,
+          "totalCarbs": 55,
+          "totalFats": 11,
+          "dishes": [
+            {
+              "dishName": "Stir Fry + Rice",
+              "recipe": "Stir fry chicken/tofu with veggies, serve over rice.",
+              "calories": 480,
+              "protein": 32,
+              "carbs": 55,
+              "fats": 11
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Wednesday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Protein oatmeal",
+          "mealDescription": "Oats mixed with whey",
+          "totalCalories": 400,
+          "totalProtein": 30,
+          "totalCarbs": 52,
+          "totalFats": 8,
+          "dishes": [
+            {
+              "dishName": "Protein Oats",
+              "recipe": "Mix oats with whey and water or milk.",
+              "calories": 400,
+              "protein": 30,
+              "carbs": 52,
+              "fats": 8
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Shrimp + sweet potato + salad",
+          "mealDescription": "Clean and nutrient-rich lunch",
+          "totalCalories": 510,
+          "totalProtein": 40,
+          "totalCarbs": 46,
+          "totalFats": 14,
+          "dishes": [
+            {
+              "dishName": "Shrimp Plate",
+              "recipe": "Cook shrimp, bake sweet potato, prepare salad.",
+              "calories": 510,
+              "protein": 40,
+              "carbs": 46,
+              "fats": 14
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Rice cake + peanut butter",
+          "mealDescription": "Carbs and fats for energy",
+          "totalCalories": 130,
+          "totalProtein": 3,
+          "totalCarbs": 14,
+          "totalFats": 6,
+          "dishes": [
+            {
+              "dishName": "PB Rice Cake",
+              "recipe": "Spread peanut butter on rice cake.",
+              "calories": 130,
+              "protein": 3,
+              "carbs": 14,
+              "fats": 6
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + cottage cheese",
+          "mealDescription": "Protein blend for fast and slow digestion",
+          "totalCalories": 260,
+          "totalProtein": 35,
+          "totalCarbs": 10,
+          "totalFats": 5,
+          "dishes": [
+            {
+              "dishName": "Shake + Cottage Cheese",
+              "recipe": "Consume whey shake and cottage cheese.",
+              "calories": 260,
+              "protein": 35,
+              "carbs": 10,
+              "fats": 5
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Lean beef chili + vegetables",
+          "mealDescription": "High protein spicy dinner",
+          "totalCalories": 520,
+          "totalProtein": 42,
+          "totalCarbs": 38,
+          "totalFats": 16,
+          "dishes": [
+            {
+              "dishName": "Beef Chili",
+              "recipe": "Cook lean beef with beans, tomato, and chili spices.",
+              "calories": 520,
+              "protein": 42,
+              "carbs": 38,
+              "fats": 16
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Thursday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Protein smoothie",
+          "mealDescription": "Fruit and whey smoothie",
+          "totalCalories": 350,
+          "totalProtein": 32,
+          "totalCarbs": 45,
+          "totalFats": 6,
+          "dishes": [
+            {
+              "dishName": "Smoothie",
+              "recipe": "Blend whey, banana, berries, and milk.",
+              "calories": 350,
+              "protein": 32,
+              "carbs": 45,
+              "fats": 6
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Baked chicken + couscous + carrots",
+          "mealDescription": "Balanced lunch bowl",
+          "totalCalories": 520,
+          "totalProtein": 45,
+          "totalCarbs": 52,
+          "totalFats": 10,
+          "dishes": [
+            {
+              "dishName": "Chicken Couscous Bowl",
+              "recipe": "Bake chicken, cook couscous, and steam carrots.",
+              "calories": 520,
+              "protein": 45,
+              "carbs": 52,
+              "fats": 10
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Orange",
+          "mealDescription": "Quick carbs",
+          "totalCalories": 80,
+          "totalProtein": 1,
+          "totalCarbs": 20,
+          "totalFats": 0,
+          "dishes": [
+            {
+              "dishName": "Orange",
+              "recipe": "Eat 1 medium orange.",
+              "calories": 80,
+              "protein": 1,
+              "carbs": 20,
+              "fats": 0
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + yogurt",
+          "mealDescription": "Protein and probiotics",
+          "totalCalories": 260,
+          "totalProtein": 35,
+          "totalCarbs": 24,
+          "totalFats": 6,
+          "dishes": [
+            {
+              "dishName": "Shake + Yogurt",
+              "recipe": "Drink protein shake, eat Greek yogurt.",
+              "calories": 260,
+              "protein": 35,
+              "carbs": 24,
+              "fats": 6
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "White fish + veggies + avocado",
+          "mealDescription": "Healthy fats and lean protein",
+          "totalCalories": 500,
+          "totalProtein": 38,
+          "totalCarbs": 20,
+          "totalFats": 26,
+          "dishes": [
+            {
+              "dishName": "Fish + Veg + Avocado",
+              "recipe": "Cook white fish, serve with veggies and sliced avocado.",
+              "calories": 500,
+              "protein": 38,
+              "carbs": 20,
+              "fats": 26
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Friday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Veggie omelet + toast",
+          "mealDescription": "Egg omelet with vegetables",
+          "totalCalories": 380,
+          "totalProtein": 28,
+          "totalCarbs": 32,
+          "totalFats": 16,
+          "dishes": [
+            {
+              "dishName": "Omelet",
+              "recipe": "Cook eggs with peppers, onions, spinach.",
+              "calories": 380,
+              "protein": 28,
+              "carbs": 32,
+              "fats": 16
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Tuna salad + brown rice",
+          "mealDescription": "High protein tuna with carbs",
+          "totalCalories": 460,
+          "totalProtein": 40,
+          "totalCarbs": 48,
+          "totalFats": 10,
+          "dishes": [
+            {
+              "dishName": "Tuna Bowl",
+              "recipe": "Mix tuna with light mayo, serve with brown rice.",
+              "calories": 460,
+              "protein": 40,
+              "carbs": 48,
+              "fats": 10
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Apple + cashews",
+          "mealDescription": "Carbs + fats snack",
+          "totalCalories": 190,
+          "totalProtein": 2,
+          "totalCarbs": 26,
+          "totalFats": 8,
+          "dishes": [
+            {
+              "dishName": "Apple + Cashews",
+              "recipe": "Eat 1 apple with a handful of cashews.",
+              "calories": 190,
+              "protein": 2,
+              "carbs": 26,
+              "fats": 8
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + banana",
+          "mealDescription": "Fast protein + carbs",
+          "totalCalories": 250,
+          "totalProtein": 27,
+          "totalCarbs": 32,
+          "totalFats": 1,
+          "dishes": [
+            {
+              "dishName": "Shake + Banana",
+              "recipe": "Blend protein powder with banana.",
+              "calories": 250,
+              "protein": 27,
+              "carbs": 32,
+              "fats": 1
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Chicken stir-fry + cauliflower rice",
+          "mealDescription": "Low-carb high-protein meal",
+          "totalCalories": 480,
+          "totalProtein": 45,
+          "totalCarbs": 28,
+          "totalFats": 14,
+          "dishes": [
+            {
+              "dishName": "Stir Fry",
+              "recipe": "Stir fry chicken and veggies, serve with cauliflower rice.",
+              "calories": 480,
+              "protein": 45,
+              "carbs": 28,
+              "fats": 14
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Saturday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Cottage cheese + pineapple",
+          "mealDescription": "High protein sweet breakfast",
+          "totalCalories": 320,
+          "totalProtein": 26,
+          "totalCarbs": 30,
+          "totalFats": 9,
+          "dishes": [
+            {
+              "dishName": "Cottage Cheese Bowl",
+              "recipe": "Top cottage cheese with pineapple chunks.",
+              "calories": 320,
+              "protein": 26,
+              "carbs": 30,
+              "fats": 9
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Turkey meatballs + zucchini noodles",
+          "mealDescription": "Lean lunch low in carbs",
+          "totalCalories": 470,
+          "totalProtein": 45,
+          "totalCarbs": 28,
+          "totalFats": 16,
+          "dishes": [
+            {
+              "dishName": "Turkey Meatballs Plate",
+              "recipe": "Bake turkey meatballs and serve with zucchini noodles.",
+              "calories": 470,
+              "protein": 45,
+              "carbs": 28,
+              "fats": 16
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Half protein bar",
+          "mealDescription": "Quick snack",
+          "totalCalories": 110,
+          "totalProtein": 10,
+          "totalCarbs": 14,
+          "totalFats": 3,
+          "dishes": [
+            {
+              "dishName": "Protein Bar (Half)",
+              "recipe": "Eat half a protein bar.",
+              "calories": 110,
+              "protein": 10,
+              "carbs": 14,
+              "fats": 3
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + boiled egg",
+          "mealDescription": "Simple protein recovery",
+          "totalCalories": 210,
+          "totalProtein": 30,
+          "totalCarbs": 4,
+          "totalFats": 5,
+          "dishes": [
+            {
+              "dishName": "Shake + Egg",
+              "recipe": "Drink protein shake and eat 1 boiled egg.",
+              "calories": 210,
+              "protein": 30,
+              "carbs": 4,
+              "fats": 5
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Salmon + sweet potato + asparagus",
+          "mealDescription": "Well-balanced nutritious dinner",
+          "totalCalories": 540,
+          "totalProtein": 40,
+          "totalCarbs": 42,
+          "totalFats": 22,
+          "dishes": [
+            {
+              "dishName": "Salmon Plate",
+              "recipe": "Bake salmon, roast sweet potato, steam asparagus.",
+              "calories": 540,
+              "protein": 40,
+              "carbs": 42,
+              "fats": 22
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "dayName": "Sunday",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "mealName": "Protein pancakes + strawberries",
+          "mealDescription": "High-protein sweet breakfast",
+          "totalCalories": 400,
+          "totalProtein": 32,
+          "totalCarbs": 48,
+          "totalFats": 8,
+          "dishes": [
+            {
+              "dishName": "Protein Pancakes",
+              "recipe": "Blend oats, whey, egg, and cook as pancakes.",
+              "calories": 400,
+              "protein": 32,
+              "carbs": 48,
+              "fats": 8
+            }
+          ]
+        },
+        {
+          "mealType": "lunch",
+          "mealName": "Chicken Caesar salad (light dressing)",
+          "mealDescription": "High protein salad",
+          "totalCalories": 450,
+          "totalProtein": 38,
+          "totalCarbs": 20,
+          "totalFats": 22,
+          "dishes": [
+            {
+              "dishName": "Chicken Caesar Salad",
+              "recipe": "Assemble grilled chicken, lettuce, parmesan, light dressing.",
+              "calories": 450,
+              "protein": 38,
+              "carbs": 20,
+              "fats": 22
+            }
+          ]
+        },
+        {
+          "mealType": "pre-workout",
+          "mealName": "Banana",
+          "mealDescription": "Quick energy",
+          "totalCalories": 110,
+          "totalProtein": 1,
+          "totalCarbs": 28,
+          "totalFats": 0,
+          "dishes": [
+            {
+              "dishName": "Banana",
+              "recipe": "Eat 1 banana.",
+              "calories": 110,
+              "protein": 1,
+              "carbs": 28,
+              "fats": 0
+            }
+          ]
+        },
+        {
+          "mealType": "post-workout",
+          "mealName": "Protein shake + yogurt",
+          "mealDescription": "Protein and carbs after workout",
+          "totalCalories": 260,
+          "totalProtein": 35,
+          "totalCarbs": 24,
+          "totalFats": 6,
+          "dishes": [
+            {
+              "dishName": "Shake + Yogurt",
+              "recipe": "Drink whey shake and eat Greek yogurt.",
+              "calories": 260,
+              "protein": 35,
+              "carbs": 24,
+              "fats": 6
+            }
+          ]
+        },
+        {
+          "mealType": "dinner",
+          "mealName": "Lean beef/tofu + quinoa + veggies",
+          "mealDescription": "Balanced protein and carbs dinner",
+          "totalCalories": 540,
+          "totalProtein": 42,
+          "totalCarbs": 40,
+          "totalFats": 16,
+          "dishes": [
+            {
+              "dishName": "Beef/Tofu Plate",
+              "recipe": "Cook beef or tofu, serve with quinoa and veggies.",
+              "calories": 540,
+              "protein": 42,
+              "carbs": 40,
+              "fats": 16
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

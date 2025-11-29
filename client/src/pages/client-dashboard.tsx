@@ -256,17 +256,17 @@ export default function ClientDashboard() {
 
           {/* Stats Cards Row - Credit Card Style */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Workout Streak - Dark Blue with Orange Accent */}
+            {/* Workouts Assigned - Dark Blue with Orange Accent */}
             <Card className="hover-elevate relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-0 rounded-2xl p-6 min-h-56 flex flex-col justify-between">
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-orange-500 rounded-full opacity-80" />
               <div className="relative z-10">
-                <p className="text-xs font-medium text-white">Workout Streak</p>
-                <div className="text-6xl font-bold text-white my-4">12</div>
-                <p className="text-sm text-white">Keep it up!</p>
+                <p className="text-xs font-medium text-white">Workouts</p>
+                <div className="text-6xl font-bold text-white my-4">{sessionsData?.length || 0}</div>
+                <p className="text-sm text-white">Assigned</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-slate-700">
                 <Dumbbell className="h-6 w-6 text-white" />
-                <span className="text-sm font-medium text-white">Days</span>
+                <span className="text-sm font-medium text-white">Sessions</span>
               </div>
             </Card>
 
@@ -281,12 +281,12 @@ export default function ClientDashboard() {
               </div>
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Sessions Completed</p>
-                <div className="text-6xl font-bold text-white my-4">34</div>
-                <p className="text-sm text-white">+5 this week</p>
+                <div className="text-6xl font-bold text-white my-4">{stats.totalSessions}</div>
+                <p className="text-sm text-white">+{stats.weekSessions} this week</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-yellow-300">
                 <Target className="h-6 w-6 text-white" />
-                <span className="text-sm font-medium text-white">Sessions</span>
+                <span className="text-sm font-medium text-white">Completed</span>
               </div>
             </Card>
 
@@ -295,7 +295,7 @@ export default function ClientDashboard() {
               <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-300 rounded-full opacity-20" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Calories Burned</p>
-                <div className="text-6xl font-bold text-white my-4">2,450</div>
+                <div className="text-6xl font-bold text-white my-4">{stats.weekCalories.toLocaleString()}</div>
                 <p className="text-sm text-white">This week</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-emerald-300">
@@ -309,12 +309,12 @@ export default function ClientDashboard() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-300 rounded-full opacity-40" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Next Session</p>
-                <div className="text-6xl font-bold text-white my-4">6 PM</div>
-                <p className="text-sm text-white">Today</p>
+                <div className="text-6xl font-bold text-white my-4">{nextSessionTime !== "No session" ? nextSessionTime : "N/A"}</div>
+                <p className="text-sm text-white">{nextSessionTime !== "No session" ? nextSessionDate : "No session"}</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-orange-300">
                 <Calendar className="h-6 w-6 text-white" />
-                <span className="text-sm font-medium text-white">Scheduled</span>
+                <span className="text-sm font-medium text-white">Timing</span>
               </div>
             </Card>
           </div>

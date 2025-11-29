@@ -25,14 +25,14 @@ export function SessionReminders() {
 
     const checkReminders = () => {
       const now = new Date();
-      const reminderTime = 10 * 60 * 1000; // 10 minutes before
+      const reminderTime = 60 * 60 * 1000; // 1 hour before
 
       sessions.forEach(session => {
         if (session.status === 'upcoming' && !reminders.has(session._id)) {
           const sessionTime = new Date(session.scheduledAt);
           const timeDiff = sessionTime.getTime() - now.getTime();
           
-          // Send notification 10 minutes before session
+          // Send notification 1 hour before session
           if (timeDiff > 0 && timeDiff <= reminderTime) {
             new Notification('Upcoming Live Session', {
               body: `${session.title} starts in ${Math.round(timeDiff / 60000)} minutes!`,

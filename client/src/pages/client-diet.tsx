@@ -319,6 +319,7 @@ Total Items: ${items.length}
                   </div>
                 </CardContent>
               </Card>
+      </main>
             );
           })}
         </div>

@@ -51,6 +51,7 @@ export default function ClientHabits() {
               </div>
             </CardContent>
           </Card>
+      </main>
         </div>
       </div>
     );
@@ -170,6 +171,7 @@ export default function ClientHabits() {
               </div>
             </CardContent>
           </Card>
+      </main>
         )}
 
         {/* Habits List */}
@@ -181,6 +183,7 @@ export default function ClientHabits() {
               </p>
             </CardContent>
           </Card>
+      </main>
         ) : (
           <div className="space-y-4">
             {habits.map((habit: any) => {
@@ -211,6 +214,7 @@ export default function ClientHabits() {
                     </div>
                   </CardContent>
                 </Card>
+      </main>
               );
             })}
           </div>

@@ -300,6 +300,7 @@ export default function ClientVideoLibrary() {
                     )}
                   </CardContent>
                 </Card>
+      </main>
               );
               })}
             </div>
@@ -316,6 +317,7 @@ export default function ClientVideoLibrary() {
         videoId={playingVideo?.id || ""}
       />
 
-      <MobileNavigation />
+      </div>
+    </div>
   );
 }

@@ -38,10 +38,10 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
   return (
     <header className="border-b-4 border-b-amber-500 dark:border-b-amber-600">
-      <div className="container mx-auto px-6 py-3">
+      <div className="container mx-auto px-3 py-2">
         <div className="flex items-center justify-between gap-2">
           {/* Logo and Back Button */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex items-center gap-0.5 flex-shrink-0">
             {showBackButton() && (
               <button 
                 onClick={() => history.back()} 
@@ -62,10 +62,10 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
           </div>
 
           {/* Main Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center px-4">
+          <nav className="hidden lg:flex items-center gap-2 flex-1 justify-center px-2">
             <Button 
               variant="ghost" 
-              className={`${currentPage === 'dashboard' ? 'nav-underline-blue' : ''} px-4`}
+              className={`${currentPage === 'dashboard' ? 'nav-underline-blue' : ''} px-2`}
               onClick={() => setLocation("/client")}
               data-testid="link-dashboard"
             >
@@ -75,7 +75,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
             <Button 
               variant="ghost" 
-              className={`${currentPage === 'sessions' ? 'nav-underline-purple' : ''} px-4`}
+              className={`${currentPage === 'sessions' ? 'nav-underline-purple' : ''} px-2`}
               onClick={() => setLocation("/client/sessions")}
               data-testid="link-sessions"
             >
@@ -85,7 +85,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
             <Button 
               variant="ghost" 
-              className={`${currentPage === 'videos' ? 'nav-underline-red' : ''} px-4`}
+              className={`${currentPage === 'videos' ? 'nav-underline-red' : ''} px-2`}
               onClick={() => setLocation("/client/videos")}
               data-testid="link-videos"
             >
@@ -95,7 +95,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
             <Button 
               variant="ghost" 
-              className={`${currentPage === 'diet' ? 'nav-underline-orange' : ''} px-4`}
+              className={`${currentPage === 'diet' ? 'nav-underline-orange' : ''} px-2`}
               onClick={() => setLocation("/client/diet")}
               data-testid="link-diet"
             >
@@ -106,7 +106,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
             {isProOrElite && (
               <Button 
                 variant="ghost" 
-                className={`${currentPage === 'habits' ? 'nav-underline-green' : ''} px-4`}
+                className={`${currentPage === 'habits' ? 'nav-underline-green' : ''} px-2`}
                 onClick={() => setLocation("/client/habits")}
                 data-testid="link-habits"
               >
@@ -117,7 +117,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
             <Button 
               variant="ghost" 
-              className={`${currentPage === 'workout-plans' ? 'nav-underline-amber' : ''} px-4`}
+              className={`${currentPage === 'workout-plans' ? 'nav-underline-amber' : ''} px-2`}
               onClick={() => setLocation("/client/workout-plans")}
               data-testid="link-workout-plans"
             >
@@ -127,7 +127,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={`${['weight-tracking', 'body-measurements', 'achievements', 'personal-records', 'monthly-reports', 'progress', 'goals'].includes(currentPage || '') ? 'nav-underline-green' : ''} px-4`} data-testid="dropdown-progress">
+                <Button variant="ghost" className={`${['weight-tracking', 'body-measurements', 'achievements', 'personal-records', 'monthly-reports', 'progress', 'goals'].includes(currentPage || '') ? 'nav-underline-green' : ''} px-2`} data-testid="dropdown-progress">
                   <TrendingUp className="h-5 w-5 mr-2 text-green-600" />
                   <span className="hidden xl:inline font-medium">Progress</span>
                   <ChevronDown className="h-5 w-5 ml-1" />
@@ -179,7 +179,7 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
           </button>
 
           {/* Icon Buttons */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex items-center gap-0.5 flex-shrink-0">
             <SessionReminders />
             <ThemeToggle />
             <TrainerContactDropdown isProOrElite={isProOrElite} />

@@ -32,8 +32,7 @@ export default function TrainerAnalytics() {
   });
 
   const { data: trainerVideos = [] } = useQuery<VideoType[]>({
-    queryKey: ['/api/trainers', trainerId, 'videos'],
-    enabled: !!trainerId,
+    queryKey: ['/api/videos'],
     staleTime: 30000,
     refetchInterval: 60000,
   });

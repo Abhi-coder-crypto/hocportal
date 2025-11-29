@@ -1,5 +1,7 @@
 import { ClientHeader } from "@/components/client-header";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -33,7 +35,11 @@ interface Notification {
   isRead: boolean;
   link?: string;
   createdAt: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 export default function ClientNotifications() {
   const [, setLocation] = useLocation();
@@ -350,4 +356,8 @@ export default function ClientNotifications() {
       </main>
     </div>
   );
+      <MobileNavigation />
+    </>
+  );
 }
+

@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { ClientHeader } from "@/components/client-header";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -487,4 +489,8 @@ export default function ClientProfile() {
       </main>
     </div>
   );
+      <MobileNavigation />
+    </>
+  );
 }
+

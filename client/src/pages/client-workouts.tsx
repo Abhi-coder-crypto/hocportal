@@ -1,5 +1,7 @@
 import { ClientHeader } from "@/components/client-header";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -26,7 +28,11 @@ interface Exercise {
   notes?: string;
   difficulty?: string;
   intensity?: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 interface WorkoutPlan {
   _id: string;
@@ -36,20 +42,32 @@ interface WorkoutPlan {
   difficulty: string;
   durationWeeks: number;
   goal?: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 interface DietPlan {
   _id: string;
   meals: Array<{ calories?: number; weekNumber?: number }>;
   targetCalories?: number;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 interface ClientData {
   weight?: number;
   age?: number;
   gender?: string;
   goal?: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 export default function ClientWorkouts() {
   const [currentWeekDay, setCurrentWeekDay] = useState<string>("");
@@ -495,4 +513,8 @@ export default function ClientWorkouts() {
       <ContactTrainerDialog open={contactTrainerOpen} onOpenChange={setContactTrainerOpen} />
     </div>
   );
+      <MobileNavigation />
+    </>
+  );
 }
+

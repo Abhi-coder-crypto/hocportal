@@ -1,6 +1,9 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { queryClient, apiRequest } from "@/lib/queryClient";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { ClientHeader } from "@/components/client-header";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,7 +22,11 @@ interface WorkoutPlan {
   goal?: string;
   difficulty?: string;
   createdAt: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 interface WorkoutSession {
   _id: string;
@@ -28,7 +35,11 @@ interface WorkoutSession {
   duration: number;
   completedAt: string;
   notes?: string;
+      <MobileNavigation />
+    </>
+  );
 }
+
 
 export default function ClientWorkoutPlans() {
   const { toast } = useToast();
@@ -408,4 +419,8 @@ export default function ClientWorkoutPlans() {
       </main>
     </div>
   );
+      <MobileNavigation />
+    </>
+  );
 }
+

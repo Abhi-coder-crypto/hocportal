@@ -1,5 +1,7 @@
 import { ClientHeader } from "@/components/client-header";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, CheckCircle2, Clock, Dumbbell } from "lucide-react";
 import { useLocation } from "wouter";
@@ -138,4 +140,8 @@ export default function ClientHistory() {
       </main>
     </div>
   );
+      <MobileNavigation />
+    </>
+  );
 }
+

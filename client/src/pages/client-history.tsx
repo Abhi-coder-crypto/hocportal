@@ -137,6 +137,5 @@ export default function ClientHistory() {
           </Card>
         </div>
       </main>
-    </div>
   );
 }

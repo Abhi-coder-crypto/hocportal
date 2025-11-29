@@ -246,6 +246,5 @@ export default function ClientProgressCharts() {
           </div>
         </div>
       </main>
-    </div>
+  );
 }
-

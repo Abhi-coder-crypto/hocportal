@@ -337,6 +337,5 @@ export default function ClientWeightTracking() {
           )}
         </div>
       </main>
-    </div>
+  );
 }
-

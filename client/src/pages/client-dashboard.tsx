@@ -402,6 +402,5 @@ export default function ClientDashboard() {
       </main>
 
       <MobileNavigation />
-    </div>
   );
 }

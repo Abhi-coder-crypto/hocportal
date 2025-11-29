@@ -216,6 +216,5 @@ export default function ClientHabits() {
           </div>
         )}
       </div>
-    </div>
   );
 }

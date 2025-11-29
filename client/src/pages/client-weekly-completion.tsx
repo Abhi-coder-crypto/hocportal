@@ -161,6 +161,5 @@ export default function ClientWeeklyCompletion() {
           </CardContent>
         </Card>
       </main>
-    </div>
+  );
 }
-

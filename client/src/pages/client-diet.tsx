@@ -435,6 +435,5 @@ Total Items: ${items.length}
           </DialogContent>
         </Dialog>
       </div>
-    </div>
   );
 }

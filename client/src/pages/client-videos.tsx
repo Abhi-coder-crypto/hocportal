@@ -400,6 +400,5 @@ export default function ClientVideos() {
           </Tabs>
         </div>
       </main>
-    </div>
+  );
 }
-

@@ -197,6 +197,5 @@ export default function ClientPersonalRecords() {
         )}
         </div>
       </main>
-    </div>
+  );
 }
-

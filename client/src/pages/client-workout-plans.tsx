@@ -406,6 +406,5 @@ export default function ClientWorkoutPlans() {
           </div>
         )}
       </main>
-    </div>
+  );
 }
-

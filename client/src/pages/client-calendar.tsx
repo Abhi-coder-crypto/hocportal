@@ -443,6 +443,5 @@ export default function ClientCalendar() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+  );
 }
-

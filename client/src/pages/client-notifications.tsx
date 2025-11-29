@@ -349,6 +349,5 @@ export default function ClientNotifications() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+  );
 }
-

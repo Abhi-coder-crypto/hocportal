@@ -623,6 +623,5 @@ export default function ClientGoals() {
           )}
         </div>
       </main>
-    </div>
+  );
 }
-

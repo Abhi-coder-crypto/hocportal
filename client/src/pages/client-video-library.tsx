@@ -311,6 +311,8 @@ export default function ClientVideoLibrary() {
           isOpen={!!playingVideo}
           onClose={() => setPlayingVideo(null)}
           videoUrl={playingVideo?.url || ""}
+          videoTitle={playingVideo?.title || ""}
+          videoId={playingVideo?._id || ""}
         />
       </main>
 

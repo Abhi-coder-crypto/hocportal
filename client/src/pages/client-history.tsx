@@ -137,5 +137,8 @@ export default function ClientHistory() {
           </Card>
         </div>
       </main>
+
+      <MobileNavigation />
+    </div>
   );
 }

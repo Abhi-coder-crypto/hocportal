@@ -430,6 +430,11 @@ Total Items: ${items.length}
                     <Download className="h-4 w-4 mr-2" />
                     Download List
                   </Button>
+                </div>
+              );
+            })()}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );

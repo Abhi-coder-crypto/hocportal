@@ -50,7 +50,6 @@ export default function ClientHabits() {
                 </div>
               </div>
             </CardContent>
-        </Card>
           </Card>
         </div>
       </div>

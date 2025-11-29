@@ -197,5 +197,8 @@ export default function ClientPersonalRecords() {
         )}
         </div>
       </main>
+
+      <MobileNavigation />
+    </div>
   );
 }

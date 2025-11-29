@@ -204,6 +204,13 @@ export default function ClientDashboard() {
     refetchInterval: 30000,
   });
 
+  const { data: dietPlanData } = useQuery<any>({
+    queryKey: [`/api/clients/${clientId}/diet-plans`],
+    enabled: !!clientId,
+    staleTime: 0,
+    refetchInterval: 30000,
+  });
+
   if (isLoading || !dashboardData) {
     return (
       <div className="w-full bg-background">
@@ -284,6 +291,33 @@ export default function ClientDashboard() {
     if (plan.completed) completedWorkouts++;
   });
 
+  // Count live/upcoming sessions assigned to this client
+  const assignedSessions = (sessionsData || []).filter((s: any) => s.status === 'live' || s.status === 'upcoming').length;
+
+  // Calculate total calories from 7-day diet plan
+  const dietCalories = dietPlanData?.totalCalories || 0;
+
+  // Get next session logic - show next session if Mon-Sat pattern
+  const getNextSession = () => {
+    if (!formattedSessions || formattedSessions.length === 0) return null;
+    
+    const today = new Date();
+    const todayDayOfWeek = today.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+    
+    // Sessions are Mon-Sat (1-6), so if today is Sun (0), show Mon session; if Sat (6), show Mon
+    const nextDay = todayDayOfWeek === 0 || todayDayOfWeek === 6 ? 1 : todayDayOfWeek + 1;
+    const daysUntilNext = nextDay === 1 ? (todayDayOfWeek === 0 ? 1 : 8 - todayDayOfWeek) : (nextDay - todayDayOfWeek);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + daysUntilNext);
+    
+    // Find session matching tomorrow's day of week
+    const tomorrowDayOfWeek = tomorrow.getDay();
+    return formattedSessions.find((s: any) => new Date(s.id ? new Date().setDate(new Date().getDate() + (tomorrowDayOfWeek - today.getDay())) : 0));
+  };
+
+  const nextSessionInfo = getNextSession();
+
   // Calculate weight goal progress from logged weight measurements
   const currentWeight = weightData?.current || progress.currentWeight || 0;
   const targetWeight = weightData?.goal || progress.targetWeight || 0;
@@ -336,7 +370,7 @@ export default function ClientDashboard() {
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-orange-500 rounded-full opacity-80" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Workouts</p>
-                <div className="text-6xl font-bold text-white my-4">{(sessionsData as any[])?.length || 0}</div>
+                <div className="text-6xl font-bold text-white my-4">{assignedWorkoutCount}</div>
                 <p className="text-sm text-white">Assigned</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-slate-700">
@@ -345,7 +379,7 @@ export default function ClientDashboard() {
               </div>
             </Card>
 
-            {/* Sessions Completed - Yellow/Gold */}
+            {/* Live Sessions - Yellow/Gold */}
             <Card className="hover-elevate relative overflow-hidden bg-gradient-to-br from-yellow-400 to-yellow-500 border-0 rounded-2xl p-6 min-h-56 flex flex-col justify-between">
               <div className="absolute top-2 right-2 opacity-10">
                 <div className="grid grid-cols-4 gap-1">
@@ -355,13 +389,13 @@ export default function ClientDashboard() {
                 </div>
               </div>
               <div className="relative z-10">
-                <p className="text-xs font-medium text-white">Sessions Completed</p>
-                <div className="text-6xl font-bold text-white my-4">{stats.totalSessions}</div>
-                <p className="text-sm text-white">+{stats.weekSessions} this week</p>
+                <p className="text-xs font-medium text-white">Live Sessions</p>
+                <div className="text-6xl font-bold text-white my-4">{assignedSessions}</div>
+                <p className="text-sm text-white">Assigned</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-yellow-300">
                 <Target className="h-6 w-6 text-white" />
-                <span className="text-sm font-medium text-white">Completed</span>
+                <span className="text-sm font-medium text-white">Sessions</span>
               </div>
             </Card>
 
@@ -370,7 +404,7 @@ export default function ClientDashboard() {
               <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-300 rounded-full opacity-20" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Calories Burned</p>
-                <div className="text-6xl font-bold text-white my-4">{stats.weekCalories.toLocaleString()}</div>
+                <div className="text-6xl font-bold text-white my-4">{dietCalories.toLocaleString()}</div>
                 <p className="text-sm text-white">This week</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-emerald-300">
@@ -384,8 +418,8 @@ export default function ClientDashboard() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-300 rounded-full opacity-40" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Next Session</p>
-                <div className="text-6xl font-bold text-white my-4">{nextSessionTime !== "No session" ? nextSessionTime : "N/A"}</div>
-                <p className="text-sm text-white">{nextSessionTime !== "No session" ? nextSessionDate : "No session"}</p>
+                <div className="text-6xl font-bold text-white my-4">{nextSessionInfo ? format(new Date(nextSessionInfo.id), "hh:mm a") : "N/A"}</div>
+                <p className="text-sm text-white">{nextSessionInfo ? format(new Date(nextSessionInfo.id), "MMM d") : "No session"}</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-orange-300">
                 <Calendar className="h-6 w-6 text-white" />

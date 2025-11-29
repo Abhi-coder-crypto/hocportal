@@ -205,6 +205,7 @@ export default function ClientVideos() {
           )}
         </CardContent>
       </Card>
+    );
   };
 
   if (!clientId) return null;
@@ -218,6 +219,7 @@ export default function ClientVideos() {
         onClose={() => setPlayingVideo(null)}
         videoUrl={playingVideo?.url || ""}
         videoTitle={playingVideo?.title || ""}
+        videoId={playingVideo?.url?.split('/')[3] || ""}
       />
 
       <main className="flex-1 py-8">

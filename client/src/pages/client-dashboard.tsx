@@ -244,10 +244,10 @@ export default function ClientDashboard() {
 
   // Determine package access based on actual package tiers
   const packageName = packageAccess?.packageName || client.packageName || '';
-  // Live sessions & Habit tracking available ONLY for: Pro Transformation and Elite Athlete
-  const hasPremiumFeatures = ['Pro Transformation', 'Elite Athlete / Fast Result'].includes(packageName);
-  const hasLiveSessionAccess = hasPremiumFeatures;
-  const hasHabitTrackingAccess = hasPremiumFeatures;
+  // Live sessions available for: Fit Plus, Pro Transformation, and Elite Athlete
+  const hasLiveSessionAccess = ['Fit Plus (Main Group Program)', 'Pro Transformation', 'Elite Athlete / Fast Result'].includes(packageName);
+  // Habit tracking available ONLY for: Pro Transformation and Elite Athlete
+  const hasHabitTrackingAccess = ['Pro Transformation', 'Elite Athlete / Fast Result'].includes(packageName);
   const hasVideoAccess = true; // All packages have video access
   
   // Weekly workout data from calendar - match actual workout dates

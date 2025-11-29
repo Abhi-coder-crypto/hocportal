@@ -1,0 +1,101 @@
+
+> rest-express@1.0.0 dev
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+📧 SMTP email service configured
+✅ Zoom service configured
+🛡️  Rate limiting middleware initialized
+   Login: 5 requests per 15 minutes
+   Signup: 3 requests per 60 minutes
+   Upload: 50 requests per 60 minutes
+   General API: 1000 requests per 15 minutes
+(node:17503) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+Connected to MongoDB
+7:04:33 AM [express] ✅ Database connected successfully
+🔄 Starting LiveSession schema migration...
+✅ LiveSession migration complete. Updated 0 of 1 sessions.
+7:04:38 AM [express] 📦 Found 15 existing packages
+7:04:39 AM [express] 🔐 Verified admin user (email: admin@fitpro.com, role: admin)
+7:04:40 AM [express] 🔐 Verified trainer user (email: trainer@fitpro.com)
+🔧 Checking for string clientIds to fix...
+✅ All clientIds are properly formatted (no string IDs found)
+WebSocket server initialized
+7:04:43 AM [express] 🔌 WebSocket server initialized
+📧 Session reminder scheduler started (checking every 30 minutes)
+7:04:43 AM [express] 🚀 Server running on http://0.0.0.0:5000
+📧 Checking session reminders: found 0 sessions in reminder window
+[replit-cartographer] Error processing /home/runner/workspace/client/src/pages/client-access.tsx: SyntaxError: Unterminated JSX contents. (195:13)
+    at toParseError (/home/runner/workspace/node_modules/@babel/parser/src/parse-error.ts:95:45)
+    at raise (/home/runner/workspace/node_modules/@babel/parser/src/tokenizer/index.ts:1503:19)
+    at jsxReadToken (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:104:22)
+    at getTokenFromCode (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:596:14)
+    at getTokenFromCode (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:4094:13)
+    at nextToken (/home/runner/workspace/node_modules/@babel/parser/src/tokenizer/index.ts:278:10)
+    at next (/home/runner/workspace/node_modules/@babel/parser/src/tokenizer/index.ts:121:10)
+    at eat (/home/runner/workspace/node_modules/@babel/parser/src/tokenizer/index.ts:126:12)
+    at expect (/home/runner/workspace/node_modules/@babel/parser/src/parser/util.ts:156:15)
+    at jsxParseClosingElementAt (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:460:12)
+    at jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:480:39)
+    at jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:483:34)
+    at jsxParseElement (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:559:19)
+    at parseExprAtom (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:573:21)
+    at parseExprSubscripts (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:734:23)
+    at parseUpdate (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:713:21)
+    at parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:675:23)
+    at parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3855:20)
+    at parseMaybeUnaryOrPrivate (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:409:14)
+    at parseExprOps (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:421:23)
+    at parseMaybeConditional (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:376:23)
+    at parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:301:21)
+    at fn (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3708:23)
+    at tryParse (/home/runner/workspace/node_modules/@babel/parser/src/parser/util.ts:174:20)
+    at parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3707:20)
+    at callback (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:257:12)
+    at allowInAnd (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:3192:12)
+    at parseMaybeAssignAllowIn (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:256:17)
+    at parseMaybeAssignAllowInOrVoidPattern (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:3306:17)
+    at parseParenAndDistinguishExpression (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:1813:16)
+    at parseExprAtom (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:1162:21)
+    at parseExprAtom (/home/runner/workspace/node_modules/@babel/parser/src/plugins/jsx/index.ts:583:22)
+    at parseExprSubscripts (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:734:23)
+    at parseUpdate (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:713:21)
+    at parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:675:23)
+    at parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3855:20)
+    at parseMaybeUnaryOrPrivate (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:409:14)
+    at parseExprOps (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:421:23)
+    at parseMaybeConditional (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:376:23)
+    at parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:301:21)
+    at parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3727:22)
+    at parseExpressionBase (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:226:23)
+    at callback (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:217:39)
+    at allowInAnd (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:3187:16)
+    at parseExpression (/home/runner/workspace/node_modules/@babel/parser/src/parser/expression.ts:217:17)
+    at parseReturnStatement (/home/runner/workspace/node_modules/@babel/parser/src/parser/statement.ts:1110:28)
+    at parseStatementContent (/home/runner/workspace/node_modules/@babel/parser/src/parser/statement.ts:538:21)
+    at parseStatementContent (/home/runner/workspace/node_modules/@babel/parser/src/plugins/typescript/index.ts:3185:20)
+    at parseStatementLike (/home/runner/workspace/node_modules/@babel/parser/src/parser/statement.ts:477:17)
+    at parseStatementListItem (/home/runner/workspace/node_modules/@babel/parser/src/parser/statement.ts:426:17) {
+  code: 'BABEL_PARSER_SYNTAX_ERROR',
+  reasonCode: 'UnterminatedJsxContent',
+  loc: Position { line: 195, column: 13, index: 7561 },
+  pos: 7561,
+  syntaxPlugin: 'jsx'
+}
+7:04:45 AM [vite] (client) Pre-transform error: /home/runner/workspace/client/src/pages/client-access.tsx: Unterminated JSX contents. (195:13)
+
+  193 |           </CardContent>
+  194 |         </Card>
+> 195 |       </main>
+      |              ^
+  196 |   );
+  197 | }
+  198 |
+  Plugin: vite:react-babel
+  File: /home/runner/workspace/client/src/pages/client-access.tsx:195:13
+  193 |            </CardContent>
+  194 |          </Card>
+  195 |        </main>
+      |               ^
+  196 |    );
+  197 |  }

@@ -225,8 +225,8 @@ export default function ClientDashboard() {
   const { client, stats, progress, nextSession, upcomingSessions: dashboardUpcomingSessions, calendarData = [] } =
     dashboardData || { client: { name: '', packageName: '', goal: '' }, stats: { totalSessions: 0, weekSessions: 0, weekCalories: 0, currentStreak: 0, maxStreak: 0, monthSessions: 0, totalCalories: 0, waterIntakeToday: 0 }, progress: { initialWeight: 0, currentWeight: 0, targetWeight: 0, weightProgress: 0, weeklyWorkoutCompletion: 0 }, nextSession: null, upcomingSessions: [], calendarData: [] };
   
-  // Use assigned videos from admin/trainer panel (no hard-coded videos)
-  const videos = (assignedVideos && assignedVideos.length > 0) ? assignedVideos : DUMMY_VIDEOS;
+  // Use only assigned videos from admin/trainer panel - no fallback to dummy data
+  const videos = assignedVideos || [];
 
   // Format sessions from the sessions endpoint - show assigned upcoming sessions with names
   const formattedSessions = ((upcomingSessions && upcomingSessions.length > 0 ? upcomingSessions : sessionsData) || [])
@@ -399,7 +399,7 @@ export default function ClientDashboard() {
             {/* Left Column: Videos (Assigned from Workout Library) */}
             <div className="lg:col-span-2">
               <ContinueWatching 
-                videos={assignedVideos && assignedVideos.length > 0 ? assignedVideos : videos || []} 
+                videos={videos} 
                 onWatchAll={() => setLocation("/client/videos")}
               />
             </div>

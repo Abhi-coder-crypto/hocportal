@@ -291,29 +291,30 @@ export default function ClientDashboard() {
     if (plan.completed) completedWorkouts++;
   });
 
-  // Count live/upcoming sessions assigned to this client
-  const assignedSessions = (sessionsData || []).filter((s: any) => s.status === 'live' || s.status === 'upcoming').length;
+  // Count only live sessions assigned to this client
+  const assignedSessions = (sessionsData || []).filter((s: any) => s.status === 'live').length;
 
   // Calculate total calories from 7-day diet plan
   const dietCalories = dietPlanData?.totalCalories || 0;
 
-  // Get next session logic - show next session if Mon-Sat pattern
+  // Get next session - show tomorrow's date at the same time as today's session
   const getNextSession = () => {
     if (!formattedSessions || formattedSessions.length === 0) return null;
     
+    // Get the first session's time
+    const currentSession = formattedSessions[0];
+    if (!currentSession) return null;
+    
+    // Get tomorrow's date
     const today = new Date();
-    const todayDayOfWeek = today.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-    
-    // Sessions are Mon-Sat (1-6), so if today is Sun (0), show Mon session; if Sat (6), show Mon
-    const nextDay = todayDayOfWeek === 0 || todayDayOfWeek === 6 ? 1 : todayDayOfWeek + 1;
-    const daysUntilNext = nextDay === 1 ? (todayDayOfWeek === 0 ? 1 : 8 - todayDayOfWeek) : (nextDay - todayDayOfWeek);
-    
     const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + daysUntilNext);
+    tomorrow.setDate(tomorrow.getDate() + 1);
     
-    // Find session matching tomorrow's day of week
-    const tomorrowDayOfWeek = tomorrow.getDay();
-    return formattedSessions.find((s: any) => new Date(s.id ? new Date().setDate(new Date().getDate() + (tomorrowDayOfWeek - today.getDay())) : 0));
+    // Return tomorrow's date with the session time
+    return {
+      time: currentSession.time,
+      date: tomorrow
+    };
   };
 
   const nextSessionInfo = getNextSession();
@@ -418,8 +419,8 @@ export default function ClientDashboard() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-300 rounded-full opacity-40" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white">Next Session</p>
-                <div className="text-6xl font-bold text-white my-4">{nextSessionInfo ? format(new Date(nextSessionInfo.id), "hh:mm a") : "N/A"}</div>
-                <p className="text-sm text-white">{nextSessionInfo ? format(new Date(nextSessionInfo.id), "MMM d") : "No session"}</p>
+                <div className="text-6xl font-bold text-white my-4">{nextSessionInfo ? nextSessionInfo.time : "N/A"}</div>
+                <p className="text-sm text-white">{nextSessionInfo ? format(nextSessionInfo.date, "eee, MMM d") : "No session"}</p>
               </div>
               <div className="flex items-center justify-between relative z-10 pt-4 border-t border-orange-300">
                 <Calendar className="h-6 w-6 text-white" />

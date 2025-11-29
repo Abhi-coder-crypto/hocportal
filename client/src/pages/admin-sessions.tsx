@@ -21,7 +21,7 @@ import { z } from "zod";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Calendar as CalendarIcon, Users, Clock, Trash2, UserPlus, List, Video, Copy } from "lucide-react";
-import { format } from "date-fns";
+import { format, isSameDay, startOfDay, endOfDay } from "date-fns";
 import { AssignSessionDialog } from "@/components/assign-session-dialog";
 
 const SESSION_STATUSES = ["upcoming", "live", "completed", "cancelled"];
@@ -257,30 +257,16 @@ export default function AdminSessions() {
                 <div className="text-center py-12 text-muted-foreground">Loading sessions...</div>
               ) : (
                 <>
-                  {viewMode === "calendar" && selectedDate && sessions.filter((s: any) => {
-                    const sessionDate = new Date(s.scheduledAt);
-                    return sessionDate.toDateString() === selectedDate.toDateString();
-                  }).length === 0 ? (
-                    <Card>
-                      <CardContent className="pt-6 text-center py-12 text-muted-foreground">
-                        No sessions scheduled for {selectedDate.toDateString()}
-                      </CardContent>
-                    </Card>
-                  ) : sessions.length === 0 ? (
-                    <Card>
-                      <CardContent className="pt-6 text-center py-12 text-muted-foreground">
-                        No sessions found. Create your first session to get started.
-                      </CardContent>
-                    </Card>
-                  ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {(viewMode === "calendar" && selectedDate 
-                        ? sessions.filter((s: any) => {
-                            const sessionDate = new Date(s.scheduledAt);
-                            return sessionDate.toDateString() === selectedDate.toDateString();
-                          })
-                        : sessions
-                      ).map((session: any) => {
+                  {viewMode === "calendar" && selectedDate ? (
+                    sessions.filter((s: any) => isSameDay(new Date(s.scheduledAt), selectedDate)).length === 0 ? (
+                      <Card>
+                        <CardContent className="pt-6 text-center py-12 text-muted-foreground">
+                          No sessions scheduled for {format(selectedDate, "MMM dd, yyyy")}
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {sessions.filter((s: any) => isSameDay(new Date(s.scheduledAt), selectedDate)).map((session: any) => {
                     const packageName = session.packageId?.name || session.packageName || '';
                     return (
                     <Card key={session._id} className="hover-elevate" data-testid={`card-session-${session._id}`}>

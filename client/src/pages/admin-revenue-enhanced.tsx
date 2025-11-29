@@ -491,7 +491,6 @@ export default function AdminRevenueEnhanced() {
         </DialogContent>
       </Dialog>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

@@ -133,7 +133,6 @@ export default function AdminSubscriptionAlerts() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

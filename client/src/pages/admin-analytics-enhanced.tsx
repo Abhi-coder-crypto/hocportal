@@ -369,7 +369,6 @@ export default function AdminAnalyticsEnhanced() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

@@ -352,7 +352,6 @@ export default function TrainerDashboard() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

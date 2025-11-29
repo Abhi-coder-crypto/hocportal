@@ -312,7 +312,6 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

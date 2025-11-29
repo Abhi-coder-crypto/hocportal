@@ -57,7 +57,7 @@ export default function ResetPassword() {
       if (!token) {
         throw new Error("No reset token provided");
       }
-      const response = await apiRequest("/api/auth/reset-password", {
+      const response = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -65,7 +65,10 @@ export default function ResetPassword() {
           newPassword: data.password,
         }),
       });
-      return response;
+      if (!response.ok) {
+        throw new Error("Failed to reset password");
+      }
+      return response.json();
     },
     onSuccess: () => {
       setResetSuccess(true);

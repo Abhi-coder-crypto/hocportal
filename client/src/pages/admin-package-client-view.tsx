@@ -173,7 +173,6 @@ export default function AdminPackageClientView() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

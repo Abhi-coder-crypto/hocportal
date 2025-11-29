@@ -217,7 +217,6 @@ export default function TrainerAnalytics() {
         </div>
       </div>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

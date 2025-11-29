@@ -249,7 +249,6 @@ export default function TrainerVideos() {
         videoTitle={assignVideoTitle}
       />
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

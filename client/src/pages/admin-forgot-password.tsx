@@ -38,7 +38,7 @@ export default function AdminForgotPassword() {
 
   const resetPasswordMutation = useMutation({
     mutationFn: async (data: ResetPasswordForm) => {
-      const response = await apiRequest("/api/auth/reset-password-direct", {
+      const response = await fetch("/api/auth/reset-password-direct", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -47,7 +47,10 @@ export default function AdminForgotPassword() {
           isAdmin: true,
         }),
       });
-      return response;
+      if (!response.ok) {
+        throw new Error("Failed to reset password");
+      }
+      return response.json();
     },
     onSuccess: () => {
       toast({

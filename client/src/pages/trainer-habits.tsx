@@ -421,7 +421,6 @@ export default function TrainerHabits() {
         </DialogContent>
       </Dialog>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

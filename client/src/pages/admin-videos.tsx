@@ -372,7 +372,6 @@ export default function AdminVideos() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <MobileNavigation />
     </div>
   </SidebarProvider>
   );

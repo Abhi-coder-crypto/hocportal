@@ -217,4 +217,5 @@ export default function ClientHabits() {
         )}
       </div>
     </div>
+  );
 }

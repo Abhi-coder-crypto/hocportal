@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Progress } from "@/components/ui/progress";
 import { Calendar, Target, TrendingUp, CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -164,8 +163,6 @@ export default function ClientWeeklyCompletion() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

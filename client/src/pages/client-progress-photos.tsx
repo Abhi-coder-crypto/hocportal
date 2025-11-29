@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,8 +28,6 @@ interface ProgressPhoto {
   description?: string;
   weight?: number;
   uploadedAt: string;
-      <MobileNavigation />
-    </>
   );
 }
 
@@ -346,8 +343,6 @@ export default function ClientProgressPhotos() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

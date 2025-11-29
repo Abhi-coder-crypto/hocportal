@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Input } from "@/components/ui/input";
 import { ClientHeader } from "@/components/client-header";
 import { Badge } from "@/components/ui/badge";
@@ -404,8 +403,6 @@ export default function ClientVideos() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

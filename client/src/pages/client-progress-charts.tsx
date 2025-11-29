@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Scale, Ruler, TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -249,8 +248,6 @@ export default function ClientProgressCharts() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

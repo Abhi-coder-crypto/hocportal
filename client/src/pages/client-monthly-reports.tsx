@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Calendar, TrendingUp, Award, Dumbbell } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -158,8 +157,6 @@ export default function ClientMonthlyReports() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { ClientHeader } from "@/components/client-header";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -72,8 +71,6 @@ interface Goal {
   }>;
   createdAt: string;
   updatedAt: string;
-      <MobileNavigation />
-    </>
   );
 }
 
@@ -631,8 +628,6 @@ export default function ClientGoals() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

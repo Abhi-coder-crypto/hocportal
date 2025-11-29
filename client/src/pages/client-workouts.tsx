@@ -27,9 +27,6 @@ interface Exercise {
   notes?: string;
   difficulty?: string;
   intensity?: string;
-      <MobileNavigation />
-    </>
-  );
 }
 
 
@@ -41,9 +38,6 @@ interface WorkoutPlan {
   difficulty: string;
   durationWeeks: number;
   goal?: string;
-      <MobileNavigation />
-    </>
-  );
 }
 
 
@@ -51,9 +45,6 @@ interface DietPlan {
   _id: string;
   meals: Array<{ calories?: number; weekNumber?: number }>;
   targetCalories?: number;
-      <MobileNavigation />
-    </>
-  );
 }
 
 
@@ -62,9 +53,6 @@ interface ClientData {
   age?: number;
   gender?: string;
   goal?: string;
-      <MobileNavigation />
-    </>
-  );
 }
 
 

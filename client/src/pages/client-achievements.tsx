@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Award, Trophy, Target, Dumbbell, TrendingUp, Calendar, CheckCircle2 } from "lucide-react";
@@ -209,8 +208,6 @@ export default function ClientAchievements() {
       </main>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

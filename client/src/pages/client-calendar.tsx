@@ -1,7 +1,6 @@
 import { ClientHeader } from "@/components/client-header";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -27,8 +26,6 @@ interface LiveSession {
   trainerId: {
     name: string;
   };
-      <MobileNavigation />
-    </>
   );
 }
 
@@ -41,8 +38,6 @@ interface WorkoutSession {
   date: string;
   completed: boolean;
   duration: number;
-      <MobileNavigation />
-    </>
   );
 }
 
@@ -60,8 +55,6 @@ interface Goal {
     achieved: boolean;
     achievedAt?: string;
   }>;
-      <MobileNavigation />
-    </>
   );
 }
 
@@ -455,8 +448,6 @@ export default function ClientCalendar() {
       </Dialog>
     </div>
   );
-      <MobileNavigation />
-    </>
   );
 }
 

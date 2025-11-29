@@ -22,15 +22,17 @@ export function AssignVideoDialog({ open, onOpenChange, videoId, videoTitle }: A
   const { toast } = useToast();
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
 
-  // Get current trainer ID
+  // Get current user to check role
   const { data: authData } = useQuery<any>({
     queryKey: ['/api/auth/me'],
   });
-  const trainerId = authData?.user?._id?.toString() || authData?.user?.id;
+  const isAdmin = authData?.role === 'admin';
+  const trainerId = authData?.user?._id?.toString() || authData?.user?.id || authData?._id?.toString();
 
+  // Fetch appropriate clients based on user role
   const { data: clients = [], isLoading: isLoadingClients } = useQuery<any[]>({
-    queryKey: ['/api/trainers', trainerId, 'clients'],
-    enabled: !!trainerId,
+    queryKey: isAdmin ? ['/api/admin/clients'] : ['/api/trainers', trainerId, 'clients'],
+    enabled: isAdmin || !!trainerId,
   });
 
   const { data: assignedClients = [], isLoading: isLoadingAssigned } = useQuery<any[]>({

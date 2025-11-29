@@ -398,11 +398,10 @@ export default function ClientDashboard() {
               </Card>
             )}
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
       <MobileNavigation />
     </div>
   );
-}
 }

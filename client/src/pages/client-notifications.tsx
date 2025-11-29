@@ -156,6 +156,7 @@ export default function ClientNotifications() {
       return (
         n.title.toLowerCase().includes(query) ||
         n.message.toLowerCase().includes(query)
+      );
     });
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -349,5 +350,8 @@ export default function ClientNotifications() {
           </TabsContent>
         </Tabs>
       </main>
+
+      <MobileNavigation />
+    </div>
   );
 }

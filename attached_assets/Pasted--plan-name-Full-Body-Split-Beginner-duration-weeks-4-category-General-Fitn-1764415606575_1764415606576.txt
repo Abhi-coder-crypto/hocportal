@@ -1,0 +1,83 @@
+{
+  "plan_name": "Full Body Split – Beginner",
+  "duration_weeks": 4,
+  "category": "General Fitness",
+  "difficulty": "Beginner",
+  "description": "A beginner-friendly 7-day full body split designed to build strength, improve form, and develop consistent training habits. Includes 6 training days and 1 active rest day.",
+  "days": [
+    {
+      "day": "Monday",
+      "focus": "Chest & Triceps",
+      "exercises": [
+        { "exercise": "Push-Ups", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Dumbbell Bench Press", "sets": 3, "reps": "10-12", "rest_seconds": 90 },
+        { "exercise": "Chest Fly (Dumbbells or Machine)", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Tricep Dips (Bench)", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Tricep Rope Pushdown", "sets": 3, "reps": "12-15", "rest_seconds": 60 }
+      ]
+    },
+    {
+      "day": "Tuesday",
+      "focus": "Back & Biceps",
+      "exercises": [
+        { "exercise": "Lat Pulldown", "sets": 3, "reps": "10-12", "rest_seconds": 90 },
+        { "exercise": "Seated Row Machine", "sets": 3, "reps": "10-12", "rest_seconds": 90 },
+        { "exercise": "Dumbbell Bent-Over Row", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Dumbbell Bicep Curl", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Hammer Curl", "sets": 3, "reps": "12", "rest_seconds": 60 }
+      ]
+    },
+    {
+      "day": "Wednesday",
+      "focus": "Shoulders & Abs",
+      "exercises": [
+        { "exercise": "Dumbbell Shoulder Press", "sets": 3, "reps": "10-12", "rest_seconds": 90 },
+        { "exercise": "Lateral Raises", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Front Raises", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Plank", "sets": 3, "reps": "30-45 sec", "rest_seconds": 60 },
+        { "exercise": "Bicycle Crunch", "sets": 3, "reps": "20 reps", "rest_seconds": 60 }
+      ]
+    },
+    {
+      "day": "Thursday",
+      "focus": "Legs (Quads, Hamstrings, Glutes)",
+      "exercises": [
+        { "exercise": "Bodyweight Squats", "sets": 3, "reps": "12-15", "rest_seconds": 90 },
+        { "exercise": "Leg Press", "sets": 3, "reps": "10-12", "rest_seconds": 90 },
+        { "exercise": "Leg Extension", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Hamstring Curl Machine", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Calf Raise Machine", "sets": 3, "reps": "15", "rest_seconds": 60 }
+      ]
+    },
+    {
+      "day": "Friday",
+      "focus": "Full Body Conditioning",
+      "exercises": [
+        { "exercise": "Kettlebell Deadlift", "sets": 3, "reps": "12-15", "rest_seconds": 60 },
+        { "exercise": "Dumbbell Shoulder Press", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Push-Ups", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Seated Row", "sets": 3, "reps": "10-12", "rest_seconds": 60 },
+        { "exercise": "Plank", "sets": 3, "reps": "30-45 sec", "rest_seconds": 60 }
+      ]
+    },
+    {
+      "day": "Saturday",
+      "focus": "Glutes, Core & Light Cardio",
+      "exercises": [
+        { "exercise": "Glute Bridges", "sets": 3, "reps": "15", "rest_seconds": 60 },
+        { "exercise": "Hip Thrusts", "sets": 3, "reps": "12", "rest_seconds": 90 },
+        { "exercise": "Goblet Squat", "sets": 3, "reps": "12", "rest_seconds": 60 },
+        { "exercise": "Side Planks", "sets": 3, "reps": "30 sec each side", "rest_seconds": 60 },
+        { "exercise": "Treadmill Walk", "sets": 1, "reps": "10 minutes", "rest_seconds": 0 }
+      ]
+    },
+    {
+      "day": "Sunday",
+      "focus": "Rest Day",
+      "exercises": [
+        { "exercise": "Light Walking", "sets": 1, "reps": "10-20 minutes", "rest_seconds": 0 },
+        { "exercise": "Stretching", "sets": 1, "reps": "5-10 minutes", "rest_seconds": 0 }
+      ]
+    }
+  ]
+}

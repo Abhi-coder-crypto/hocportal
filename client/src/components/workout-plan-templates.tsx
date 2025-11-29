@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import { Plus, Search, Filter, Dumbbell, Edit, Trash2, Copy, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AssignPlanDialog } from "@/components/assign-plan-dialog";

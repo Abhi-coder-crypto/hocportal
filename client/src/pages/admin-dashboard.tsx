@@ -237,6 +237,7 @@ export default function AdminDashboard() {
                     <Button 
                       className="w-full justify-start bg-blue-500/10 hover:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700" 
                       variant="ghost"
+                      onClick={() => setLocation('/admin/videos')}
                       data-testid="button-add-video"
                     >
                       <Video className="h-4 w-4 mr-2" />
@@ -245,6 +246,7 @@ export default function AdminDashboard() {
                     <Button 
                       className="w-full justify-start bg-purple-500/10 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700" 
                       variant="ghost"
+                      onClick={() => setLocation('/admin/live-sessions')}
                       data-testid="button-schedule-session"
                     >
                       <Activity className="h-4 w-4 mr-2" />
@@ -253,6 +255,7 @@ export default function AdminDashboard() {
                     <Button 
                       className="w-full justify-start bg-green-500/10 hover:bg-green-500/20 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700" 
                       variant="ghost"
+                      onClick={() => setLocation('/admin/diet')}
                       data-testid="button-create-diet"
                     >
                       <TrendingUp className="h-4 w-4 mr-2" />
@@ -261,6 +264,7 @@ export default function AdminDashboard() {
                     <Button 
                       className="w-full justify-start bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-700" 
                       variant="ghost"
+                      onClick={() => setLocation('/admin/analytics')}
                       data-testid="button-view-analytics"
                     >
                       <Users className="h-4 w-4 mr-2" />

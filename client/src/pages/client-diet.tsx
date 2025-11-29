@@ -434,8 +434,6 @@ Total Items: ${items.length}
             })()}
           </DialogContent>
         </Dialog>
-
-        <MobileNavigation />
       </div>
     </div>
   );

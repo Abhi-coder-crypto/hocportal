@@ -11,7 +11,7 @@ import { storage } from "./storage";
 import { setupWebSocket } from "./websocket";
 import { hashPassword } from "./utils/auth";
 import { User } from "./models/user";
-import { Trainer } from "./models";
+import { Trainer, WorkoutPlan } from "./models";
 import { startSessionReminderScheduler } from "./utils/session-reminder-scheduler";
 import { emailService } from "./utils/email";
 import { migrateLiveSessionReferences } from "./migrate-sessions";
@@ -435,75 +435,71 @@ app.use((req, res, next) => {
       }
 
       // Seed workout templates if none exist
-      const workoutTemplateCount = await storage.storage?.db?.collection('workoutplans')?.countDocuments({ isTemplate: true }) ?? 0;
-      if (workoutTemplateCount === 0) {
-        const fullBodyTemplate = {
-          name: "Full Body Split – Beginner",
-          description: "A beginner-friendly 7-day full body split designed to build strength, improve form, and develop consistent training habits. Includes 6 training days and 1 active rest day.",
-          category: "general",
-          difficulty: "beginner",
-          durationWeeks: 4,
-          isTemplate: true,
-          exercises: {
-            "Monday": [
-              { name: "Push-Ups", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Dumbbell Bench Press", sets: 3, reps: "10-12", rest: "90s" },
-              { name: "Chest Fly (Dumbbells or Machine)", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Tricep Dips (Bench)", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Tricep Rope Pushdown", sets: 3, reps: "12-15", rest: "60s" }
-            ],
-            "Tuesday": [
-              { name: "Lat Pulldown", sets: 3, reps: "10-12", rest: "90s" },
-              { name: "Seated Row Machine", sets: 3, reps: "10-12", rest: "90s" },
-              { name: "Dumbbell Bent-Over Row", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Dumbbell Bicep Curl", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Hammer Curl", sets: 3, reps: "12", rest: "60s" }
-            ],
-            "Wednesday": [
-              { name: "Dumbbell Shoulder Press", sets: 3, reps: "10-12", rest: "90s" },
-              { name: "Lateral Raises", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Front Raises", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Plank", sets: 3, reps: "30-45 sec", rest: "60s" },
-              { name: "Bicycle Crunch", sets: 3, reps: "20 reps", rest: "60s" }
-            ],
-            "Thursday": [
-              { name: "Bodyweight Squats", sets: 3, reps: "12-15", rest: "90s" },
-              { name: "Leg Press", sets: 3, reps: "10-12", rest: "90s" },
-              { name: "Leg Extension", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Hamstring Curl Machine", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Calf Raise Machine", sets: 3, reps: "15", rest: "60s" }
-            ],
-            "Friday": [
-              { name: "Kettlebell Deadlift", sets: 3, reps: "12-15", rest: "60s" },
-              { name: "Dumbbell Shoulder Press", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Push-Ups", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Seated Row", sets: 3, reps: "10-12", rest: "60s" },
-              { name: "Plank", sets: 3, reps: "30-45 sec", rest: "60s" }
-            ],
-            "Saturday": [
-              { name: "Glute Bridges", sets: 3, reps: "15", rest: "60s" },
-              { name: "Hip Thrusts", sets: 3, reps: "12", rest: "90s" },
-              { name: "Goblet Squat", sets: 3, reps: "12", rest: "60s" },
-              { name: "Side Planks", sets: 3, reps: "30 sec each side", rest: "60s" },
-              { name: "Treadmill Walk", sets: 1, reps: "10 minutes", rest: "0s" }
-            ],
-            "Sunday": [
-              { name: "Light Walking", sets: 1, reps: "10-20 minutes", rest: "0s" },
-              { name: "Stretching", sets: 1, reps: "5-10 minutes", rest: "0s" }
-            ]
-          },
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
-
-        try {
-          await storage.storage?.db?.collection('workoutplans')?.insertOne(fullBodyTemplate);
-          log(`💪 Created workout template: Full Body Split – Beginner`);
-        } catch (workoutError) {
-          console.warn('⚠️  Could not create workout template:', (workoutError as any).message);
+      try {
+        const workoutTemplateCount = await WorkoutPlan.countDocuments({ isTemplate: true });
+        if (workoutTemplateCount === 0) {
+          const fullBodyTemplate = await WorkoutPlan.create({
+            name: "Full Body Split – Beginner",
+            description: "A beginner-friendly 7-day full body split designed to build strength, improve form, and develop consistent training habits. Includes 6 training days and 1 active rest day.",
+            category: "general",
+            difficulty: "beginner",
+            durationWeeks: 4,
+            isTemplate: true,
+            exercises: {
+              "Monday": [
+                { name: "Push-Ups", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Dumbbell Bench Press", sets: 3, reps: "10-12", rest: "90s" },
+                { name: "Chest Fly (Dumbbells or Machine)", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Tricep Dips (Bench)", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Tricep Rope Pushdown", sets: 3, reps: "12-15", rest: "60s" }
+              ],
+              "Tuesday": [
+                { name: "Lat Pulldown", sets: 3, reps: "10-12", rest: "90s" },
+                { name: "Seated Row Machine", sets: 3, reps: "10-12", rest: "90s" },
+                { name: "Dumbbell Bent-Over Row", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Dumbbell Bicep Curl", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Hammer Curl", sets: 3, reps: "12", rest: "60s" }
+              ],
+              "Wednesday": [
+                { name: "Dumbbell Shoulder Press", sets: 3, reps: "10-12", rest: "90s" },
+                { name: "Lateral Raises", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Front Raises", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Plank", sets: 3, reps: "30-45 sec", rest: "60s" },
+                { name: "Bicycle Crunch", sets: 3, reps: "20 reps", rest: "60s" }
+              ],
+              "Thursday": [
+                { name: "Bodyweight Squats", sets: 3, reps: "12-15", rest: "90s" },
+                { name: "Leg Press", sets: 3, reps: "10-12", rest: "90s" },
+                { name: "Leg Extension", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Hamstring Curl Machine", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Calf Raise Machine", sets: 3, reps: "15", rest: "60s" }
+              ],
+              "Friday": [
+                { name: "Kettlebell Deadlift", sets: 3, reps: "12-15", rest: "60s" },
+                { name: "Dumbbell Shoulder Press", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Push-Ups", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Seated Row", sets: 3, reps: "10-12", rest: "60s" },
+                { name: "Plank", sets: 3, reps: "30-45 sec", rest: "60s" }
+              ],
+              "Saturday": [
+                { name: "Glute Bridges", sets: 3, reps: "15", rest: "60s" },
+                { name: "Hip Thrusts", sets: 3, reps: "12", rest: "90s" },
+                { name: "Goblet Squat", sets: 3, reps: "12", rest: "60s" },
+                { name: "Side Planks", sets: 3, reps: "30 sec each side", rest: "60s" },
+                { name: "Treadmill Walk", sets: 1, reps: "10 minutes", rest: "0s" }
+              ],
+              "Sunday": [
+                { name: "Light Walking", sets: 1, reps: "10-20 minutes", rest: "0s" },
+                { name: "Stretching", sets: 1, reps: "5-10 minutes", rest: "0s" }
+              ]
+            }
+          });
+          log(`💪 Created workout template: ${fullBodyTemplate.name}`);
+        } else {
+          log(`💪 Found ${workoutTemplateCount} existing workout templates`);
         }
-      } else {
-        log(`💪 Found ${workoutTemplateCount} existing workout templates`);
+      } catch (workoutError) {
+        console.warn('⚠️  Could not create workout template:', (workoutError as any).message);
       }
 
   } catch (error) {

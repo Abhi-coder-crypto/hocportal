@@ -58,7 +58,6 @@ export default function Landing() {
       </section>
     </div>
 
-      <MobileNavigation />
     </div>
   );
 }

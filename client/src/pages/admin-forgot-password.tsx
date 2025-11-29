@@ -173,7 +173,6 @@ export default function AdminForgotPassword() {
       </Card>
     </div>
 
-      <MobileNavigation />
     </div>
   );
 }

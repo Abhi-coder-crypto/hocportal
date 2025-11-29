@@ -165,7 +165,6 @@ export default function AdminLogin() {
       </main>
     </div>
 
-      <MobileNavigation />
     </div>
   );
 }

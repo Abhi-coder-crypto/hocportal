@@ -212,8 +212,15 @@ export default function ClientHabits() {
                       </Button>
                     </div>
                   </CardContent>
-        </Card>
+                </Card>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
+
+    <MobileNavigation />
+  </div>
   );
 }

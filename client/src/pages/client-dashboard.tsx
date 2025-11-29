@@ -181,6 +181,7 @@ export default function ClientDashboard() {
               ))}
             </div>
           </div>
+        </main>
       </div>
     );
   }
@@ -396,7 +397,11 @@ export default function ClientDashboard() {
                 </CardContent>
               </Card>
             )}
-      </main>
+          </div>
+        </main>
+      </div>
+
+      <MobileNavigation />
     </div>
   );
 }

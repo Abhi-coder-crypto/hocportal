@@ -1,52 +1,49 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Bell, BellOff } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Bell } from "lucide-react";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export function SessionReminders() {
-  const { toast } = useToast();
-  const [permission, setPermission] = useState<NotificationPermission>('default');
-  const [reminders, setReminders] = useState<Set<string>>(new Set());
+  const [checkedSessions, setCheckedSessions] = useState<Set<string>>(new Set());
 
   const { data: sessions } = useQuery<any[]>({
     queryKey: ['/api/sessions'],
     refetchInterval: 60000, // Refetch every minute
   });
 
-  useEffect(() => {
-    if ('Notification' in window) {
-      setPermission(Notification.permission);
-    }
-  }, []);
+  const createNotificationMutation = useMutation({
+    mutationFn: async (notification: { title: string; message: string; type: string; link?: string }) => {
+      return apiRequest('POST', '/api/notifications', notification);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
+    },
+  });
 
   useEffect(() => {
-    if (!sessions || permission !== 'granted') return;
+    if (!sessions) return;
 
     const checkReminders = () => {
       const now = new Date();
       const reminderTime = 60 * 60 * 1000; // 1 hour before
 
       sessions.forEach(session => {
-        if (session.status === 'upcoming' && !reminders.has(session._id)) {
+        if (session.status === 'upcoming' && !checkedSessions.has(session._id)) {
           const sessionTime = new Date(session.scheduledAt);
           const timeDiff = sessionTime.getTime() - now.getTime();
           
-          // Send notification 1 hour before session
+          // Create in-app notification 1 hour before session
           if (timeDiff > 0 && timeDiff <= reminderTime) {
-            new Notification('Upcoming Live Session', {
-              body: `${session.title} starts in ${Math.round(timeDiff / 60000)} minutes!`,
-              icon: '/favicon.ico',
-              badge: '/favicon.ico',
-              tag: session._id,
+            const minutesUntil = Math.round(timeDiff / 60000);
+            createNotificationMutation.mutate({
+              title: "Upcoming Live Session",
+              message: `${session.title} starts in ${minutesUntil} minutes!`,
+              type: 'reminder',
+              link: `/client/sessions`
             });
             
-            setReminders(prev => new Set(prev).add(session._id));
-            
-            toast({
-              title: "Session Starting Soon!",
-              description: `${session.title} starts in ${Math.round(timeDiff / 60000)} minutes`,
-            });
+            setCheckedSessions(prev => new Set(prev).add(session._id));
           }
         }
       });
@@ -57,45 +54,16 @@ export function SessionReminders() {
     const interval = setInterval(checkReminders, 60000);
 
     return () => clearInterval(interval);
-  }, [sessions, permission, toast]);
-
-  const requestPermission = async () => {
-    if (!('Notification' in window)) {
-      toast({
-        title: "Not Supported",
-        description: "Your browser doesn't support notifications",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const result = await Notification.requestPermission();
-    setPermission(result);
-
-    if (result === 'granted') {
-      toast({
-        title: "Notifications Enabled",
-        description: "You'll receive reminders before your sessions start",
-      });
-    }
-  };
-
-  if (!('Notification' in window)) return null;
+  }, [sessions, checkedSessions]);
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={requestPermission}
-      disabled={permission === 'granted'}
-      data-testid="button-enable-reminders"
-      title={permission === 'granted' ? 'Reminders enabled' : 'Enable session reminders'}
+      data-testid="button-notifications"
+      title="Notifications"
     >
-      {permission === 'granted' ? (
-        <Bell className="h-5 w-5 text-chart-3" />
-      ) : (
-        <BellOff className="h-5 w-5" />
-      )}
+      <Bell className="h-5 w-5 text-chart-3" />
     </Button>
   );
 }

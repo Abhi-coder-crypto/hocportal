@@ -5,11 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Video as VideoIcon, Clock, Eye, Play, Plus } from "lucide-react";
+import { Search, Video as VideoIcon, Clock, Eye, Play, Plus, Edit, Trash2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { UploadVideoModal } from "@/components/upload-video-modal";
+import { AssignVideoDialog } from "@/components/assign-video-dialog";
 
 interface VideoType {
   id: string;
@@ -36,7 +37,10 @@ interface VideoType {
 export default function TrainerVideos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [playingVideo, setPlayingVideo] = useState<{ url: string; title: string } | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<{ url: string; title: string; id: string } | null>(null);
+  const [showAssignDialog, setShowAssignDialog] = useState(false);
+  const [assignVideoId, setAssignVideoId] = useState<string>("");
+  const [assignVideoTitle, setAssignVideoTitle] = useState<string>("");
   
   const style = {
     "--sidebar-width": "16rem",
@@ -79,6 +83,7 @@ export default function TrainerVideos() {
             onClose={() => setPlayingVideo(null)}
             videoUrl={playingVideo?.url || ""}
             videoTitle={playingVideo?.title || ""}
+            videoId={playingVideo?.id || ""}
           />
 
           <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10">

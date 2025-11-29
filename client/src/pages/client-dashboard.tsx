@@ -177,7 +177,7 @@ export default function ClientDashboard() {
   });
 
   const { data: workoutPlans = [] } = useQuery<any[]>({
-    queryKey: [`/api/workout-plans`],
+    queryKey: [`/api/clients/${clientId}/workout-plans`],
     enabled: !!clientId,
     staleTime: 0,
     refetchInterval: 30000,
@@ -225,30 +225,8 @@ export default function ClientDashboard() {
   const { client, stats, progress, nextSession, upcomingSessions: dashboardUpcomingSessions, calendarData = [] } =
     dashboardData || { client: { name: '', packageName: '', goal: '' }, stats: { totalSessions: 0, weekSessions: 0, weekCalories: 0, currentStreak: 0, maxStreak: 0, monthSessions: 0, totalCalories: 0, waterIntakeToday: 0 }, progress: { initialWeight: 0, currentWeight: 0, targetWeight: 0, weightProgress: 0, weeklyWorkoutCompletion: 0 }, nextSession: null, upcomingSessions: [], calendarData: [] };
   
-  // Transform assigned workout plans into video format for library display
-  const workoutVideos = (workoutPlans || []).flatMap((plan: any) => {
-    const videos: any[] = [];
-    if (plan.weeks && Array.isArray(plan.weeks)) {
-      plan.weeks.forEach((week: any, weekIdx: number) => {
-        if (week.workouts && Array.isArray(week.workouts)) {
-          week.workouts.forEach((workout: any) => {
-            videos.push({
-              id: `${plan._id}-week${weekIdx}-${workout.name}`,
-              category: workout.category || "Workout",
-              title: workout.name || `Week ${weekIdx + 1} Workout`,
-              duration: workout.duration || 45,
-              thumbnail: workout.thumbnail || fullBodyImg,
-              completed: workout.completed || false,
-            });
-          });
-        }
-      });
-    }
-    return videos;
-  });
-
-  // Use assigned workout videos if available, otherwise fallback to assigned videos, then dummy
-  const videos = workoutVideos.length > 0 ? workoutVideos : (assignedVideos && assignedVideos.length > 0 ? assignedVideos : DUMMY_VIDEOS);
+  // Use assigned videos from admin/trainer panel (no hard-coded videos)
+  const videos = (assignedVideos && assignedVideos.length > 0) ? assignedVideos : DUMMY_VIDEOS;
 
   // Format sessions from the sessions endpoint - show assigned upcoming sessions with names
   const formattedSessions = ((upcomingSessions && upcomingSessions.length > 0 ? upcomingSessions : sessionsData) || [])
@@ -298,44 +276,27 @@ export default function ClientDashboard() {
     sun: (calendarData[0]?.hasWorkout) || false,
   };
 
-  // Count completed workouts from workout plans (from assignment date onwards)
+  // Count assigned workout sessions from the day workout was assigned
   let completedWorkouts = 0;
-  let assignedWorkoutCount = 0;
-  let assignmentDate = new Date();
+  let assignedWorkoutCount = workoutPlans.length;
   
   workoutPlans.forEach((plan: any) => {
-    // Track when workout was assigned to calculate progress from that date
-    if (plan.createdAt) {
-      const planDate = new Date(plan.createdAt);
-      if (planDate < assignmentDate) {
-        assignmentDate = planDate;
-      }
-    }
-    if (plan.weeks && Array.isArray(plan.weeks)) {
-      plan.weeks.forEach((week: any) => {
-        if (week.workouts && Array.isArray(week.workouts)) {
-          week.workouts.forEach((workout: any) => {
-            assignedWorkoutCount++;
-            if (workout.completed) completedWorkouts++;
-          });
-        }
-      });
-    }
+    if (plan.completed) completedWorkouts++;
   });
 
-  // Calculate weight goal progress from logged weight
+  // Calculate weight goal progress from logged weight measurements
   const currentWeight = weightData?.current || progress.currentWeight || 0;
   const targetWeight = weightData?.goal || progress.targetWeight || 0;
   const initialWeight = weightData?.initial || progress.initialWeight || 0;
   const weightProgress = targetWeight && initialWeight ? 
     Math.round(((initialWeight - currentWeight) / (initialWeight - targetWeight)) * 100) : 0;
 
-  // Calculate workout compliance percentage and achievements
+  // Calculate workout compliance percentage
   const workoutCompliancePercent = assignedWorkoutCount > 0 
     ? Math.round((completedWorkouts / assignedWorkoutCount) * 100)
     : 0;
 
-  // Calculate achievements based on workout data
+  // Calculate achievements based on assigned workouts from assignment date
   const achievementMetrics = {
     firstWorkout: completedWorkouts > 0,
     sevenDayStreak: stats.currentStreak >= 7,

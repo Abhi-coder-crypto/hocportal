@@ -28,8 +28,8 @@ export function AssignSessionDialog({ open, onOpenChange, sessionId, sessionTitl
   const { data: authData } = useQuery<any>({
     queryKey: ['/api/auth/me'],
   });
-  const isAdmin = authData?.role === 'admin';
-  const trainerId = authData?.user?._id?.toString() || authData?.user?.id || authData?._id?.toString();
+  const isAdmin = authData?.user?.role === 'admin';
+  const trainerId = authData?.user?._id?.toString() || authData?.user?.id;
 
   const { data: packages = [], isLoading: isLoadingPackages } = useQuery<any[]>({
     queryKey: ['/api/packages'],

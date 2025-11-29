@@ -26,8 +26,8 @@ export function AssignPlanDialog({ open, onOpenChange, plan, resourceType = 'die
   const { data: authData } = useQuery<any>({
     queryKey: ['/api/auth/me'],
   });
-  const isAdmin = authData?.role === 'admin';
-  const trainerId = authData?.user?._id?.toString() || authData?.user?.id || authData?._id?.toString();
+  const isAdmin = authData?.user?.role === 'admin';
+  const trainerId = authData?.user?._id?.toString() || authData?.user?.id;
 
   // Fetch appropriate clients based on user role
   const { data: clients = [], isLoading } = useQuery<any[]>({

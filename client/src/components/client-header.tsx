@@ -376,33 +376,6 @@ export function ClientHeader({ currentPage, packageName }: ClientHeaderProps) {
                 Nutrition Calculators
               </Button>
             </div>
-
-            <div className="flex items-center gap-2 pt-4 border-t">
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={() => {
-                  setLocation("/client/profile");
-                  setMobileMenuOpen(false);
-                }}
-                data-testid="link-profile-mobile"
-              >
-                <User className="h-5 w-5" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={() => {
-                  localStorage.clear();
-                  setLocation("/");
-                  setMobileMenuOpen(false);
-                }}
-                data-testid="button-logout-mobile"
-                title="Logout"
-              >
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </div>
           </nav>
         )}
       </div>
